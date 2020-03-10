@@ -58,10 +58,12 @@ BigInteger::~BigInteger() {
 
 std::ostream &operator<<(std::ostream &out, const BigInteger& object) {
     for(int i = 0; i<object.usedCoefficients; i++){
+        bool isSkipZero = true;;
         for(int j = BASE_SIZE - 4 ; j >= 0; j -= 4){
             unsigned char symbol = (object.coefficients[i] >> j) & 15;
-            if(!(symbol == 0 && j == BASE_SIZE - 4)){
+            if(!(symbol == 0 && isSkipZero)){
                 out<<hex[symbol];
+                isSkipZero = false;
             }
         }
     }

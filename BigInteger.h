@@ -5,7 +5,7 @@
 #ifndef BIGINTEGER_BIGINTEGER_H
 #define BIGINTEGER_BIGINTEGER_H
 
-typedef unsigned char BASE;
+typedef int BASE;
 #define BASE_SIZE 8 * sizeof(BASE)
 
 class BigInteger {
