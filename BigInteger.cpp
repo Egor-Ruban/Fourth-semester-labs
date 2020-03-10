@@ -8,8 +8,6 @@
 #include "BigInteger.h"
 #include "Utils.h"
 
-char hex[16] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
-
 BigInteger::BigInteger(ConstructorTypes type, int availableCoefficients) {
     switch(type){
         case Default:
@@ -60,7 +58,7 @@ BigInteger::~BigInteger() {
 std::ostream &operator<<(std::ostream &out, const BigInteger& object) {
     for(int i = 0; i<object.usedCoefficients; i++){
         bool isSkipZero = true;;
-        for(int j = BASE_SIZE - 4 ; j >= 0; j -= 4){
+        for(int j = (BASE_SIZE) - 4 ; j >= 0; j -= 4){
             unsigned char symbol = (object.coefficients[i] >> j) & 15;
             if(!(symbol == 0 && isSkipZero)){
                 out<<hex[symbol];
@@ -75,25 +73,26 @@ std::istream &operator>>(std::istream &in, BigInteger& object) {
     std::string hexInteger;
     std::cin>>hexInteger;
     int newSymbolsAmount;
-    if(hexInteger.size() % BASE_SIZE == 0) {
-        newSymbolsAmount = hexInteger.size() / BASE_SIZE;
+    if((hexInteger.size() * 4%(BASE_SIZE)) == 0) {
+        newSymbolsAmount = (hexInteger.size() * 4)/(BASE_SIZE);
     } else {
-        newSymbolsAmount = hexInteger.size() / BASE_SIZE + 1;
+        newSymbolsAmount = ((hexInteger.size() * 4)/(BASE_SIZE)) + 1;
     }
+
     object.usedCoefficients = newSymbolsAmount;
     object.availableCoefficients = newSymbolsAmount;
     object.coefficients = new BASE[newSymbolsAmount];
 
     int currentCoefficient = -1;
-    int shift = BASE_SIZE;
-    for(int i = 0; i < hexInteger.size(); i++){
-        if(shift == BASE_SIZE){
+    int shift = (BASE_SIZE);
+    for(char hexSymbol : hexInteger){
+        if(shift == (BASE_SIZE)){
             currentCoefficient++;
             object.coefficients[currentCoefficient] = 0;
             shift = 0;
         }
         int newPart;
-        newPart = hexToInteger(hexInteger[i]);
+        newPart = hexToInteger(hexSymbol);
         object.coefficients[currentCoefficient] = (object.coefficients[currentCoefficient] << 4) | newPart;
         shift += 4;
     }

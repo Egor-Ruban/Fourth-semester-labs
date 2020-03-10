@@ -28,7 +28,6 @@ public:
 
     friend std::ostream& operator<<(std::ostream&, const BigInteger&);
     friend std::istream& operator>>(std::istream&, BigInteger&);
-    //todo 16-ый ввод и вывод
     //todo функция сравнения 2-х БЧ и, с ее использованием,
     //todo операции: >,<,>=,<=,==,!=
     //todo operator +, operator +=

@@ -3,7 +3,9 @@
 
 int main() {
     BigInteger bi = BigInteger(BigInteger::Random, 1);
-    std::cin>>bi;
-    std::cout<<bi<<std::endl;
+    while(true) {
+        std::cin >> bi;
+        std::cout << bi << std::endl;
+    }
     return 0;
 }
