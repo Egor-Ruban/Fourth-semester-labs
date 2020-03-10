@@ -28,7 +28,14 @@ public:
 
     friend std::ostream& operator<<(std::ostream&, const BigInteger&);
     friend std::istream& operator>>(std::istream&, BigInteger&);
-    //todo функция сравнения 2-х БЧ и, с ее использованием,
+
+    int compare(const BigInteger&);
+    bool operator>(const BigInteger&);
+    bool operator<(const BigInteger&);
+    bool operator>=(const BigInteger&);
+    bool operator<=(const BigInteger&);
+    bool operator==(const BigInteger&);
+    bool operator!=(const BigInteger&);
     //todo операции: >,<,>=,<=,==,!=
     //todo operator +, operator +=
     //todo operator -, operator -=

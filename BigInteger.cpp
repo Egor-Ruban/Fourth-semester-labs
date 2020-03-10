@@ -15,14 +15,12 @@ BigInteger::BigInteger(ConstructorTypes type, int availableCoefficients) {
             coefficients = new BASE[availableCoefficients];
             for(int i = 0; i<availableCoefficients; i++){
                 coefficients[i] = 0;
-                std::cout<<(int) coefficients[i];
             }
             break;
         case Empty:
             coefficients = new BASE[availableCoefficients];
             for(int i = 0; i<availableCoefficients; i++){
                 coefficients[i] = 0;
-                std::cout<<(int)coefficients[i]<<",";
             }
             break;
         case Random:
@@ -30,11 +28,9 @@ BigInteger::BigInteger(ConstructorTypes type, int availableCoefficients) {
             coefficients = new BASE[availableCoefficients];
             for(int i = 0; i<availableCoefficients; i++){
                 coefficients[i] = std::rand();
-                std::cout<<(int)coefficients[i]<<",";
             }
             break;
     }
-    std::cout<<std::endl;
     this->availableCoefficients = availableCoefficients;
     this->usedCoefficients = availableCoefficients;
 }
@@ -99,6 +95,44 @@ std::istream &operator>>(std::istream &in, BigInteger& object) {
         shift += 4;
     }
     return in;
+}
+
+int BigInteger::compare(const BigInteger &object) {
+    if(this->usedCoefficients > object.usedCoefficients){
+        return 1;
+    }
+    if(object.usedCoefficients > this->usedCoefficients){
+        return -1;
+    }
+    for(int i = 0; i<object.usedCoefficients; i++){
+        if(this->coefficients[i] > object.coefficients[i]) return 1;
+        if(this->coefficients[i] < object.coefficients[i]) return -1;
+    }
+    return 0;
+}
+
+bool BigInteger::operator>(const BigInteger &object) {
+    return this->compare(object) == 1;
+}
+
+bool BigInteger::operator<(const BigInteger &object) {
+    return this->compare(object) == -1;
+}
+
+bool BigInteger::operator>=(const BigInteger &object) {
+    return *this>object | *this==object;
+}
+
+bool BigInteger::operator<=(const BigInteger &object) {
+    return  *this<object | *this==object;
+}
+
+bool BigInteger::operator==(const BigInteger &object) {
+    return this->compare(object) == 0;
+}
+
+bool BigInteger::operator!=(const BigInteger &object) {
+    return  *this>object | *this<object;
 }
 
 
