@@ -70,9 +70,11 @@ std::ostream &operator<<(std::ostream &out, const BigInteger& object) {
 }
 
 std::istream &operator>>(std::istream &in, BigInteger& object) {
-    std::string hexInteger;
-    std::cin>>hexInteger;
+    std::string rawHexInteger;
+    std::cin>>rawHexInteger;
+    std::string hexInteger = cutUnusedSymbols(rawHexInteger);
     int newSymbolsAmount;
+    int i = 0;
     if((hexInteger.size() * 4%(BASE_SIZE)) == 0) {
         newSymbolsAmount = (hexInteger.size() * 4)/(BASE_SIZE);
     } else {
