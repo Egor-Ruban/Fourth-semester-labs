@@ -6,7 +6,7 @@
 #define BIGINTEGER_BIGINTEGER_H
 
 typedef unsigned char BASE;
-#define BASE_SIZE = 8 * sizeof(BASE)
+#define BASE_SIZE 8 * sizeof(BASE)
 
 class BigInteger {
 
@@ -23,14 +23,11 @@ public:
     };
 
     BigInteger(ConstructorTypes = Default, int = 1);
-    BigInteger(BigInteger&);
+    BigInteger(const BigInteger&);
     ~BigInteger();
 
-    //todo конструктор 1 по умолчанию (создает число 0; lenMax = 1)
-    //todo конструктор 2 с параметром (lenMax передаем через параметр, и все цифры числа заполняем нулями)
-    //todo конструктор 3 с параметрами (lenMax передаем через параметр и цифры заполняем случайными числами)
-    //todo конструктор копирования
-    //todo деструктор
+    friend std::ostream& operator<<(std::ostream&, const BigInteger&);
+    friend std::istream& operator>>(std::istream&, const BigInteger&);
     //todo 16-ый ввод и вывод
     //todo функция сравнения 2-х БЧ и, с ее использованием,
     //todo операции: >,<,>=,<=,==,!=

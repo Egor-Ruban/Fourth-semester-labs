@@ -7,6 +7,8 @@
 #include <iostream>
 #include "BigInteger.h"
 
+char hex[16] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+
 BigInteger::BigInteger(ConstructorTypes type, int availableCoefficients) {
     switch(type){
         case Default:
@@ -38,7 +40,7 @@ BigInteger::BigInteger(ConstructorTypes type, int availableCoefficients) {
     this->usedCoefficients = availableCoefficients;
 }
 
-BigInteger::BigInteger(BigInteger& object) {
+BigInteger::BigInteger(const BigInteger& object) {
     availableCoefficients = object.availableCoefficients;
     usedCoefficients = object.usedCoefficients;
     coefficients = new BASE[availableCoefficients];
@@ -52,4 +54,20 @@ BigInteger::~BigInteger() {
         delete[](coefficients);
         coefficients = nullptr;
     }
+}
+
+std::ostream &operator<<(std::ostream &out, const BigInteger& object) {
+    for(int i = 0; i<object.usedCoefficients; i++){
+        for(int j = BASE_SIZE - 4 ; j >= 0; j -= 4){
+            unsigned char symbol = (object.coefficients[i] >> j) & 15;
+            if(!(symbol == 0 && j == BASE_SIZE - 4)){
+                out<<hex[symbol];
+            }
+        }
+    }
+    return out;
+}
+
+std::istream &operator>>(std::istream &in, const BigInteger& object) {
+    return in;
 }
