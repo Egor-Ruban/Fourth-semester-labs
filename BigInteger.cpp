@@ -37,3 +37,19 @@ BigInteger::BigInteger(ConstructorTypes type, int availableCoefficients) {
     this->availableCoefficients = availableCoefficients;
     this->usedCoefficients = availableCoefficients;
 }
+
+BigInteger::BigInteger(BigInteger& object) {
+    availableCoefficients = object.availableCoefficients;
+    usedCoefficients = object.usedCoefficients;
+    coefficients = new BASE[availableCoefficients];
+    for(int i = 0; i<usedCoefficients; i++){
+        coefficients[i] = object.coefficients[i];
+    }
+}
+
+BigInteger::~BigInteger() {
+    if(coefficients != nullptr) {
+        delete[](coefficients);
+        coefficients = nullptr;
+    }
+}

@@ -22,7 +22,9 @@ public:
         Random
     };
 
-    BigInteger(ConstructorTypes type = Default, int availableCoefficients = 1);
+    BigInteger(ConstructorTypes = Default, int = 1);
+    BigInteger(BigInteger&);
+    ~BigInteger();
 
     //todo конструктор 1 по умолчанию (создает число 0; lenMax = 1)
     //todo конструктор 2 с параметром (lenMax передаем через параметр, и все цифры числа заполняем нулями)
