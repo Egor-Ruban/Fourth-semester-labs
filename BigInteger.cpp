@@ -6,6 +6,7 @@
 #include <ctime>
 #include <iostream>
 #include "BigInteger.h"
+#include "Utils.h"
 
 char hex[16] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
 
@@ -70,6 +71,33 @@ std::ostream &operator<<(std::ostream &out, const BigInteger& object) {
     return out;
 }
 
-std::istream &operator>>(std::istream &in, const BigInteger& object) {
+std::istream &operator>>(std::istream &in, BigInteger& object) {
+    std::string hexInteger;
+    std::cin>>hexInteger;
+    int newSymbolsAmount;
+    if(hexInteger.size() % BASE_SIZE == 0) {
+        newSymbolsAmount = hexInteger.size() / BASE_SIZE;
+    } else {
+        newSymbolsAmount = hexInteger.size() / BASE_SIZE + 1;
+    }
+    object.usedCoefficients = newSymbolsAmount;
+    object.availableCoefficients = newSymbolsAmount;
+    object.coefficients = new BASE[newSymbolsAmount];
+
+    int currentCoefficient = -1;
+    int shift = BASE_SIZE;
+    for(int i = 0; i < hexInteger.size(); i++){
+        if(shift == BASE_SIZE){
+            currentCoefficient++;
+            object.coefficients[currentCoefficient] = 0;
+            shift = 0;
+        }
+        int newPart;
+        newPart = hexToInteger(hexInteger[i]);
+        object.coefficients[currentCoefficient] = (object.coefficients[currentCoefficient] << 4) | newPart;
+        shift += 4;
+    }
     return in;
 }
+
+
