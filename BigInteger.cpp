@@ -104,9 +104,12 @@ int BigInteger::compare(const BigInteger &object) {
     if(object.usedCoefficients > this->usedCoefficients){
         return -1;
     }
-    for(int i = 0; i<object.usedCoefficients; i++){
+    for(int i = object.usedCoefficients - 1; i>=0; i--){
+        std::cout<< (int)this->coefficients[i]<<" and "<<(int)object.coefficients[i]<<std::endl;
         if(this->coefficients[i] > object.coefficients[i]) return 1;
-        if(this->coefficients[i] < object.coefficients[i]) return -1;
+        if(this->coefficients[i] < object.coefficients[i]){std::cout<<"here\n";
+        std::cout<< (int)this->coefficients[i]<<" and "<<(int)object.coefficients[i]<<std::endl;
+            return -1;}
     }
     return 0;
 }
@@ -133,6 +136,44 @@ bool BigInteger::operator==(const BigInteger &object) {
 
 bool BigInteger::operator!=(const BigInteger &object) {
     return  *this>object | *this<object;
+}
+
+BigInteger BigInteger::operator+(const BigInteger &object) {
+    std::cout<<" to sum :\n 1) "<< *this <<"\n 2) "<<object<<std::endl;
+    BiggerThanBASE sumOfCoefficients = 0;
+    //int minSize = std::min(object.usedCoefficients, this->usedCoefficients);
+    int maxSize = std::max(object.usedCoefficients, this->usedCoefficients);
+    int thisCurrent = this->usedCoefficients - 1;
+    int objectCurrent = object.usedCoefficients - 1;
+    int sumCurrent = maxSize - 1;
+    BigInteger sumResult = BigInteger(ConstructorTypes::Empty, maxSize + 1);
+    while(std::min(thisCurrent,objectCurrent) >= 0){
+        sumOfCoefficients += this->coefficients[thisCurrent] + object.coefficients[objectCurrent];
+        sumResult.coefficients[sumCurrent] = sumOfCoefficients;
+        sumOfCoefficients >>= BASE_SIZE;
+        thisCurrent--;
+        objectCurrent--;
+        sumCurrent--;
+    }
+    if(std::min(thisCurrent, objectCurrent) == thisCurrent){
+        while(objectCurrent >= 0){
+            sumOfCoefficients += 0 + object.coefficients[objectCurrent];
+            sumResult.coefficients[sumCurrent] = sumOfCoefficients;
+            sumOfCoefficients = sumOfCoefficients >> BASE_SIZE;
+            objectCurrent--;
+            sumCurrent--;
+        }
+    } else {
+        while(thisCurrent >= 0){
+            sumOfCoefficients += 0 + this->coefficients[thisCurrent];
+            sumResult.coefficients[sumCurrent] = sumOfCoefficients;
+            sumOfCoefficients = sumOfCoefficients >> BASE_SIZE;
+            thisCurrent--;
+            sumCurrent--;
+        }
+    }
+    sumResult.coefficients[sumCurrent] = sumOfCoefficients;
+    return sumResult;
 }
 
 
