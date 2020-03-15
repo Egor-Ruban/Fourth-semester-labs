@@ -14,6 +14,7 @@ class BigInteger {
     BASE* coefficients;
     int usedCoefficients;
     int availableCoefficients;
+    int emptyCoefficients;
 
 
 public:

@@ -33,6 +33,7 @@ BigInteger::BigInteger(ConstructorTypes type, int availableCoefficients) {
     }
     this->availableCoefficients = availableCoefficients;
     this->usedCoefficients = availableCoefficients;
+    //this->emptyCoefficients = 0;
 }
 
 BigInteger::BigInteger(const BigInteger& object) {
@@ -52,13 +53,15 @@ BigInteger::~BigInteger() {
 }
 
 std::ostream &operator<<(std::ostream &out, const BigInteger& object) {
-    for(int i = 0; i<object.usedCoefficients; i++){
-        bool isSkipZero = true;;
-        for(int j = (BASE_SIZE) - 4 ; j >= 0; j -= 4){
-            unsigned char symbol = (object.coefficients[i] >> j) & 15;
-            if(!(symbol == 0 && isSkipZero)){
-                out<<hex[symbol];
-                isSkipZero = false;
+    bool isDeleteZero = true;
+    for(int i = 0; i<object.availableCoefficients; i++){
+        if((object.coefficients[i] != 0 && isDeleteZero) || !isDeleteZero) {
+            for (int j = (BASE_SIZE) - 4; j >= 0; j -= 4) {
+                unsigned char symbol = (object.coefficients[i] >> j) & 15;
+                if((isDeleteZero && symbol != 0) || !isDeleteZero){
+                    out << hex[symbol];
+                    isDeleteZero = false;
+                }
             }
         }
     }
@@ -68,32 +71,30 @@ std::ostream &operator<<(std::ostream &out, const BigInteger& object) {
 std::istream &operator>>(std::istream &in, BigInteger& object) {
     std::string rawHexInteger;
     std::cin>>rawHexInteger;
-    std::string hexInteger = cutUnusedSymbols(rawHexInteger);
     int newSymbolsAmount;
-    int i = 0;
-    if((hexInteger.size() * 4%(BASE_SIZE)) == 0) {
-        newSymbolsAmount = (hexInteger.size() * 4)/(BASE_SIZE);
+    if((rawHexInteger.size() * 4%(BASE_SIZE)) == 0) {
+        newSymbolsAmount = (rawHexInteger.size() * 4)/(BASE_SIZE);
     } else {
-        newSymbolsAmount = ((hexInteger.size() * 4)/(BASE_SIZE)) + 1;
+        newSymbolsAmount = ((rawHexInteger.size() * 4)/(BASE_SIZE)) + 1;
     }
 
     object.usedCoefficients = newSymbolsAmount;
     object.availableCoefficients = newSymbolsAmount;
     object.coefficients = new BASE[newSymbolsAmount];
-
-    int currentCoefficient = -1;
-    int shift = (BASE_SIZE);
-    for(char hexSymbol : hexInteger){
+    int coefficientToWrite = object.availableCoefficients - 1;
+    object.coefficients[coefficientToWrite] = 0;
+    int shift = 0;
+    for(int i = rawHexInteger.size() - 1; i >= 0; i--){
         if(shift == (BASE_SIZE)){
-            currentCoefficient++;
-            object.coefficients[currentCoefficient] = 0;
             shift = 0;
+            coefficientToWrite--;
+            object.coefficients[coefficientToWrite] = 0;
         }
-        int newPart;
-        newPart = hexToInteger(hexSymbol);
-        object.coefficients[currentCoefficient] = (object.coefficients[currentCoefficient] << 4) | newPart;
-        shift += 4;
+        int newPart = hexToInteger(rawHexInteger[i]) << shift;
+        object.coefficients[coefficientToWrite] |= newPart;
+        shift+=4;
     }
+
     return in;
 }
 
@@ -105,10 +106,8 @@ int BigInteger::compare(const BigInteger &object) {
         return -1;
     }
     for(int i = object.usedCoefficients - 1; i>=0; i--){
-        std::cout<< (int)this->coefficients[i]<<" and "<<(int)object.coefficients[i]<<std::endl;
         if(this->coefficients[i] > object.coefficients[i]) return 1;
-        if(this->coefficients[i] < object.coefficients[i]){std::cout<<"here\n";
-        std::cout<< (int)this->coefficients[i]<<" and "<<(int)object.coefficients[i]<<std::endl;
+        if(this->coefficients[i] < object.coefficients[i]){
             return -1;}
     }
     return 0;
