@@ -38,7 +38,10 @@ public:
     bool operator==(const BigInteger&);
     bool operator!=(const BigInteger&);
 
+    BigInteger& operator=(const BigInteger& object);
+
     BigInteger operator+(const BigInteger& object);
+    BigInteger operator+=(const BigInteger& object);
     //todo переделать нахуй
     //todo operator +, operator +=
     //todo operator -, operator -=

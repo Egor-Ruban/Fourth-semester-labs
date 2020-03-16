@@ -140,10 +140,8 @@ bool BigInteger::operator!=(const BigInteger &object) {
     return this->compare(object) != 0;
 }
 
-BigInteger BigInteger::operator+(const BigInteger &object) {
-    std::cout<<" to sum :\n"<< *this <<"\n"<<object<<std::endl;
+BigInteger BigInteger::operator+(const BigInteger &object) { //хорошо бы переделать, остальное уже новое
     BiggerThanBASE sumOfCoefficients = 0;
-    //int minSize = std::min(object.usedCoefficients, this->usedCoefficients);
     int maxSize = std::max(object.usedCoefficients, this->usedCoefficients);
     int thisCurrent = this->usedCoefficients-1;
     int objectCurrent = object.availableCoefficients - 1;
@@ -188,6 +186,29 @@ int BigInteger::countEmptyPlaces() const {
         }
     }
     return 0;
+}
+
+BigInteger BigInteger::operator+=(const BigInteger &object) {
+    BigInteger sum = this->operator+(object);
+    this->availableCoefficients = sum.availableCoefficients;
+    this->usedCoefficients = sum.usedCoefficients;
+    this->coefficients = new BASE[this->availableCoefficients];
+    for(int i = 0; i<this->availableCoefficients; i++){
+        this->coefficients[i] = sum.coefficients[i];
+    }
+    return *this;
+}
+
+BigInteger& BigInteger::operator=(const BigInteger &object) {
+    if(this != &object) {
+        this->availableCoefficients = object.availableCoefficients;
+        this->usedCoefficients = object.usedCoefficients;
+        this->coefficients = new BASE[this->availableCoefficients];
+        for (int i = 0; i < availableCoefficients; i++) {
+            this->coefficients[i] = object.coefficients[i];
+        }
+    }
+    return *this;
 }
 
 
