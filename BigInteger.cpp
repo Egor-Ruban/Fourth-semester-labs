@@ -99,10 +99,13 @@ std::istream &operator>>(std::istream &in, BigInteger& object) {
 }
 
 int BigInteger::compare(const BigInteger &object) {
-    if(this->usedCoefficients > object.usedCoefficients){
+    int thisNumberSize = this->availableCoefficients - this->countEmptyPlaces();
+    int objectNumberSize = object.availableCoefficients - object.countEmptyPlaces();
+
+    if(thisNumberSize > objectNumberSize){
         return 1;
     }
-    if(object.usedCoefficients > this->usedCoefficients){
+    if(objectNumberSize > thisNumberSize){
         return -1;
     }
     for(int i = object.usedCoefficients - 1; i>=0; i--){
@@ -122,11 +125,11 @@ bool BigInteger::operator<(const BigInteger &object) {
 }
 
 bool BigInteger::operator>=(const BigInteger &object) {
-    return *this>object | *this==object;
+    return this->compare(object) >= 0 ;
 }
 
 bool BigInteger::operator<=(const BigInteger &object) {
-    return  *this<object | *this==object;
+    return  this->compare(object) <= 0;
 }
 
 bool BigInteger::operator==(const BigInteger &object) {
@@ -134,7 +137,7 @@ bool BigInteger::operator==(const BigInteger &object) {
 }
 
 bool BigInteger::operator!=(const BigInteger &object) {
-    return  *this>object | *this<object;
+    return this->compare(object) != 0;
 }
 
 BigInteger BigInteger::operator+(const BigInteger &object) {
@@ -173,6 +176,18 @@ BigInteger BigInteger::operator+(const BigInteger &object) {
     }
     sumResult.coefficients[sumCurrent] = sumOfCoefficients;
     return sumResult;
+}
+
+int BigInteger::countEmptyPlaces() const {
+    int result = 0;
+    for(int i = 0; i < availableCoefficients; i++){
+        if(coefficients[i] == 0){
+            result++;
+        } else {
+            break;
+        }
+    }
+    return 0;
 }
 
 

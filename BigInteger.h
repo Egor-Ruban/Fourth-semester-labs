@@ -14,8 +14,6 @@ class BigInteger {
     BASE* coefficients;
     int usedCoefficients;
     int availableCoefficients;
-    int emptyCoefficients;
-
 
 public:
     enum ConstructorTypes{
@@ -32,6 +30,7 @@ public:
     friend std::istream& operator>>(std::istream&, BigInteger&);
 
     int compare(const BigInteger&);
+    int countEmptyPlaces() const;
     bool operator>(const BigInteger&);
     bool operator<(const BigInteger&);
     bool operator>=(const BigInteger&);

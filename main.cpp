@@ -16,7 +16,7 @@ int main() {
         std::cout<<"<="<<(bi <= bi2)<<std::endl;
         std::cout<<"=="<<(bi == bi2)<<std::endl;
         std::cout<<"!="<<(bi != bi2)<<std::endl;
-        std::cout<<" + "<< (bi + bi2)<<std::endl;
+        //std::cout<<" + "<< (bi + bi2)<<std::endl;
 
     }
     return 0;
