@@ -141,13 +141,13 @@ bool BigInteger::operator!=(const BigInteger &object) {
 }
 
 BigInteger BigInteger::operator+(const BigInteger &object) {
-    std::cout<<" to sum :\n 1) "<< *this <<"\n 2) "<<object<<std::endl;
+    std::cout<<" to sum :\n"<< *this <<"\n"<<object<<std::endl;
     BiggerThanBASE sumOfCoefficients = 0;
     //int minSize = std::min(object.usedCoefficients, this->usedCoefficients);
     int maxSize = std::max(object.usedCoefficients, this->usedCoefficients);
-    int thisCurrent = this->usedCoefficients - 1;
-    int objectCurrent = object.usedCoefficients - 1;
-    int sumCurrent = maxSize - 1;
+    int thisCurrent = this->usedCoefficients-1;
+    int objectCurrent = object.availableCoefficients - 1;
+    int sumCurrent = maxSize;
     BigInteger sumResult = BigInteger(ConstructorTypes::Empty, maxSize + 1);
     while(std::min(thisCurrent,objectCurrent) >= 0){
         sumOfCoefficients += this->coefficients[thisCurrent] + object.coefficients[objectCurrent];
