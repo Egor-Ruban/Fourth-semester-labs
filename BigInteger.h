@@ -47,11 +47,9 @@ public:
     BigInteger operator*(const BASE& secondFactor);
     BigInteger operator*(const BigInteger& object);
     //todo operator -, operator -=
-    //todo operator *
     //todo operator / (BASE) // деление на базу
     //todo operator /, operator %
     //todo 10-ый ввод и вывод
-    //todo добавить выведение нуля
 };
 
 

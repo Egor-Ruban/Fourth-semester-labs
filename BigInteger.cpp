@@ -65,6 +65,7 @@ std::ostream &operator<<(std::ostream &out, const BigInteger& object) {
             }
         }
     }
+    if(isDeleteZero) out << 0;
     return out;
 }
 
@@ -242,5 +243,3 @@ BigInteger BigInteger::addIndent(int indentSize) {
     }
     return result;
 }
-
-
