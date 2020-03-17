@@ -31,6 +31,7 @@ public:
 
     int compare(const BigInteger&);
     int countEmptyPlaces() const;
+    BigInteger addIndent(int indentSize);
     bool operator>(const BigInteger&);
     bool operator<(const BigInteger&);
     bool operator>=(const BigInteger&);
@@ -43,12 +44,14 @@ public:
     BigInteger operator+(const BigInteger& object);
     BigInteger operator+=(const BigInteger& object);
 
-    BigInteger operator*(const BASE& object);
+    BigInteger operator*(const BASE& secondFactor);
+    BigInteger operator*(const BigInteger& object);
     //todo operator -, operator -=
     //todo operator *
     //todo operator / (BASE) // деление на базу
     //todo operator /, operator %
     //todo 10-ый ввод и вывод
+    //todo добавить выведение нуля
 };
 
 

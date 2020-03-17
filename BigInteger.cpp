@@ -213,7 +213,6 @@ BigInteger& BigInteger::operator=(const BigInteger &object) {
 
 BigInteger BigInteger::operator*(const BASE &secondFactor) {
     BigInteger result = BigInteger(Empty,availableCoefficients + 1);
-
     BiggerThanBASE residueKeeper = 0;
     for(int i = result.availableCoefficients; i >= 0; i--){
         BASE firstFactor;
@@ -222,6 +221,24 @@ BigInteger BigInteger::operator*(const BASE &secondFactor) {
         residueKeeper += firstFactor * secondFactor;
         result.coefficients[i] = residueKeeper;
         residueKeeper>>=(BASE_SIZE);
+    }
+    return result;
+}
+
+BigInteger BigInteger::operator*(const BigInteger &object) {
+    int indent = 0;
+    BigInteger result;
+    for(int i = object.availableCoefficients - 1; i >= 0; i--){
+        result += (this->operator*(object.coefficients[i])).addIndent(indent);
+        indent++;
+    }
+    return result;
+}
+
+BigInteger BigInteger::addIndent(int indentSize) {
+    BigInteger result = BigInteger(Empty, this->availableCoefficients + indentSize);
+    for(int i = 0; i < this->availableCoefficients; i++){
+        result.coefficients[i] = this->coefficients[i];
     }
     return result;
 }
