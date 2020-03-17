@@ -45,7 +45,9 @@ public:
     BigInteger operator+=(const BigInteger& object);
 
     BigInteger operator*(const BASE& secondFactor);
+    BigInteger operator*=(const BASE& secondFactor);
     BigInteger operator*(const BigInteger& object);
+    BigInteger operator*=(const BigInteger& object);
     //todo operator -, operator -=
     //todo operator / (BASE) // деление на базу
     //todo operator /, operator %

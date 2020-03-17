@@ -33,7 +33,6 @@ BigInteger::BigInteger(ConstructorTypes type, int availableCoefficients) {
     }
     this->availableCoefficients = availableCoefficients;
     this->usedCoefficients = availableCoefficients;
-    //this->emptyCoefficients = 0;
 }
 
 BigInteger::BigInteger(const BigInteger& object) {
@@ -191,12 +190,7 @@ int BigInteger::countEmptyPlaces() const {
 
 BigInteger BigInteger::operator+=(const BigInteger &object) {
     BigInteger sum = this->operator+(object);
-    this->availableCoefficients = sum.availableCoefficients;
-    this->usedCoefficients = sum.usedCoefficients;
-    this->coefficients = new BASE[this->availableCoefficients];
-    for(int i = 0; i<this->availableCoefficients; i++){
-        this->coefficients[i] = sum.coefficients[i];
-    }
+    *this = sum;
     return *this;
 }
 
@@ -243,3 +237,17 @@ BigInteger BigInteger::addIndent(int indentSize) {
     }
     return result;
 }
+
+BigInteger BigInteger::operator*=(const BASE &secondFactor) {
+    BigInteger result = this->operator*(secondFactor);
+    *this = result;
+    return *this;
+}
+
+BigInteger BigInteger::operator*=(const BigInteger &object) {
+    BigInteger result = this->operator*(object);
+    *this = result;
+    return *this;
+}
+
+
