@@ -6,7 +6,7 @@
 #define BIGINTEGER_BIGINTEGER_H
 
 typedef unsigned char BASE;
-typedef long long BiggerThanBASE;
+typedef unsigned long long BiggerThanBASE;
 #define BASE_SIZE 8 * sizeof(BASE)
 
 class BigInteger {
@@ -42,10 +42,9 @@ public:
 
     BigInteger operator+(const BigInteger& object);
     BigInteger operator+=(const BigInteger& object);
-    //todo переделать нахуй
-    //todo operator +, operator +=
+
+    BigInteger operator*(const BASE& object);
     //todo operator -, operator -=
-    //todo operator * (BASE) // умножение на базу
     //todo operator *
     //todo operator / (BASE) // деление на базу
     //todo operator /, operator %

@@ -72,7 +72,7 @@ std::istream &operator>>(std::istream &in, BigInteger& object) {
     std::string rawHexInteger;
     std::cin>>rawHexInteger;
     int newSymbolsAmount;
-    if((rawHexInteger.size() * 4%(BASE_SIZE)) == 0) {
+    if((rawHexInteger.size() * 4 % (BASE_SIZE)) == 0) {
         newSymbolsAmount = (rawHexInteger.size() * 4)/(BASE_SIZE);
     } else {
         newSymbolsAmount = ((rawHexInteger.size() * 4)/(BASE_SIZE)) + 1;
@@ -83,14 +83,14 @@ std::istream &operator>>(std::istream &in, BigInteger& object) {
     object.coefficients = new BASE[newSymbolsAmount];
     int coefficientToWrite = object.availableCoefficients - 1;
     object.coefficients[coefficientToWrite] = 0;
-    int shift = 0;
+    unsigned int shift = 0;
     for(int i = rawHexInteger.size() - 1; i >= 0; i--){
         if(shift == (BASE_SIZE)){
             shift = 0;
             coefficientToWrite--;
             object.coefficients[coefficientToWrite] = 0;
         }
-        int newPart = hexToInteger(rawHexInteger[i]) << shift;
+        unsigned int newPart = hexToInteger(rawHexInteger[i]) << shift;
         object.coefficients[coefficientToWrite] |= newPart;
         shift+=4;
     }
@@ -209,6 +209,21 @@ BigInteger& BigInteger::operator=(const BigInteger &object) {
         }
     }
     return *this;
+}
+
+BigInteger BigInteger::operator*(const BASE &secondFactor) {
+    BigInteger result = BigInteger(Empty,availableCoefficients + 1);
+
+    BiggerThanBASE residueKeeper = 0;
+    for(int i = result.availableCoefficients; i >= 0; i--){
+        BASE firstFactor;
+        if(i == 0) firstFactor = 0;
+        else firstFactor = this->coefficients[i-1];
+        residueKeeper += firstFactor * secondFactor;
+        result.coefficients[i] = residueKeeper;
+        residueKeeper>>=(BASE_SIZE);
+    }
+    return result;
 }
 
 
