@@ -99,12 +99,14 @@ int BigInteger::compare(const BigInteger &object) {
     if(thisNumberSize > objectNumberSize){
         return 1;
     }
-    if(objectNumberSize > thisNumberSize){
+    if(objectNumberSize > thisNumberSize) {
         return -1;
     }
-    for(int i = object.availableCoefficients - 1; i>=0; i--){ //покоэффициентное сравнение
-        if(this->coefficients[i] > object.coefficients[i]) return 1;
-        if(this->coefficients[i] < object.coefficients[i]) return -1;
+    int firstCoefficient = this->countEmptyPlaces();
+    int secondCoefficient = object.countEmptyPlaces();
+    for(int i = firstCoefficient, j = secondCoefficient; i < this->availableCoefficients; i++, j++){ //покоэффициентное сравнение
+        if(this->coefficients[i] > object.coefficients[j]) return 1;
+        if(this->coefficients[i] < object.coefficients[j]) return -1;
     }
     return 0;
 }
