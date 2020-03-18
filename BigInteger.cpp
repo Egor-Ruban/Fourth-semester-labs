@@ -281,4 +281,15 @@ BigInteger BigInteger::operator-=(const BigInteger &object) {
     return *this;
 }
 
+BigInteger BigInteger::operator/(const BASE &divider) {
+    BigInteger result = BigInteger(Empty, this->availableCoefficients);
+    int residue = 0;
+    for(int i = 0; i < this->availableCoefficients; i++){
+        BiggerThanBASE dividend = this->coefficients[i] + residue * BASE_SIZE;
+        result.coefficients[i] = dividend / divider;
+        residue = dividend % divider;
+    }
+    return result;
+}
+
 

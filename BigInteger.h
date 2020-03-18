@@ -53,6 +53,8 @@ public:
     BigInteger operator-(const BigInteger& object);
     BigInteger operator-=(const BigInteger& object);
 
+    BigInteger operator /(const BASE& divider);
+
     //todo operator / (BASE) // деление на базу
     //todo operator /, operator %
     //todo 10-ый ввод и вывод
