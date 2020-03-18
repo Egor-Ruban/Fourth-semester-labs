@@ -5,12 +5,12 @@
 #ifndef BIGINTEGER_BIGINTEGER_H
 #define BIGINTEGER_BIGINTEGER_H
 
-typedef unsigned int BASE;
+typedef unsigned char BASE;
 typedef long long BiggerThanBASE;
 #define BASE_SIZE 8 * sizeof(BASE)
 
 class BigInteger {
-
+public:
     BASE* coefficients; //массив коэффициентов
     int availableCoefficients; //сколько памяти выделено под них
     //размера значащих коэффициентов нет, так как все незначащие - нули, не влияют на результат операций
@@ -58,7 +58,8 @@ public:
 
     BASE operator%(const BASE& divider);
 
-    std::string decimalOutput();
+    std::string outputDecimal();
+    static BigInteger inputDecimal(std::string decimalInput);
     //todo operator / (BASE) // деление на базу
     //todo operator /, operator %
     //todo 10-ый ввод и вывод
