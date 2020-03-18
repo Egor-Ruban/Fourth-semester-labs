@@ -1,5 +1,5 @@
 //
-// Created by compucter on 10.03.2020.
+// Created by egor-Ruban on 10.03.2020.
 //
 
 #include <iostream>
@@ -19,17 +19,4 @@ unsigned int hexToInteger(char digit){
         std::cout<<"wrong digit: "<<(int) digit<<std::endl;
     }
     return newPart;
-}
-
-std::string cutUnusedSymbols(std::string inputHex){
-    std::string outputHex;
-    bool isFirst = true;
-    for(char symbol : inputHex){
-        if(isFirst && symbol == '0'){
-        } else {
-            isFirst = false;
-            outputHex += symbol;
-        }
-    }
-    return outputHex;
 }
