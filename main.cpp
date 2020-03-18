@@ -22,6 +22,7 @@ int main() {
         //std::cout<<" * "<<(bi * bi2)<<std::endl;
         //bi*=bi2;
         //std::cout<<" *= "<<(bi)<<std::endl;
+        std::cout<<" - "<< (bi - bi2)<<std::endl;
 
     }
     return 0;

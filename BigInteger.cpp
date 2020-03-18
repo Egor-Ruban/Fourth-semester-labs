@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include <cmath>
 #include "BigInteger.h"
 #include "Utils.h"
 
@@ -246,6 +247,43 @@ BigInteger BigInteger::operator*=(const BASE &secondFactor) {
 
 BigInteger BigInteger::operator*=(const BigInteger &object) {
     BigInteger result = this->operator*(object);
+    *this = result;
+    return *this;
+}
+
+BigInteger BigInteger::operator-(const BigInteger &object) {
+    BigInteger biggerInteger;
+    BigInteger lesserInteger;
+    if(*this >= object) {
+        biggerInteger = *this;
+        lesserInteger = object;
+    }
+    else {
+        lesserInteger = *this;
+        biggerInteger = object;
+    }
+    BigInteger result = BigInteger(Empty, biggerInteger.availableCoefficients);
+    int difference = biggerInteger.availableCoefficients - lesserInteger.availableCoefficients;
+    int transfer = 0;
+    for(int iBigger = biggerInteger.availableCoefficients - 1; iBigger >= 0; iBigger--){
+        BiggerThanBASE minuend = biggerInteger.coefficients[iBigger] - transfer;
+        BiggerThanBASE subtrahend;
+        if(iBigger - difference < 0) subtrahend = 0;
+        else subtrahend = lesserInteger.coefficients[iBigger - difference];
+
+        if(minuend < subtrahend){
+            result.coefficients[iBigger] = minuend + pow(2, BASE_SIZE) - subtrahend;
+            transfer = 1;
+        } else {
+            result.coefficients[iBigger] = minuend - subtrahend;
+            transfer = 0;
+        }
+    }
+    return result;
+}
+
+BigInteger BigInteger::operator-=(const BigInteger &object) {
+    BigInteger result = this->operator-(object);
     *this = result;
     return *this;
 }
