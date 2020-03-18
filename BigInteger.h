@@ -5,7 +5,7 @@
 #ifndef BIGINTEGER_BIGINTEGER_H
 #define BIGINTEGER_BIGINTEGER_H
 
-typedef unsigned char BASE;
+typedef unsigned int BASE;
 typedef long long BiggerThanBASE;
 #define BASE_SIZE 8 * sizeof(BASE)
 
@@ -54,7 +54,11 @@ public:
     BigInteger operator-=(const BigInteger& object);
 
     BigInteger operator /(const BASE& divider);
+    BigInteger operator/=(const BASE& divider);
 
+    BASE operator%(const BASE& divider);
+
+    std::string decimalOutput();
     //todo operator / (BASE) // деление на базу
     //todo operator /, operator %
     //todo 10-ый ввод и вывод

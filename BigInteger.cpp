@@ -6,6 +6,7 @@
 #include <ctime>
 #include <iostream>
 #include <cmath>
+#include <algorithm>
 #include "BigInteger.h"
 #include "Utils.h"
 
@@ -281,7 +282,24 @@ BigInteger BigInteger::operator-=(const BigInteger &object) {
     return *this;
 }
 
-BigInteger BigInteger::operator/(const BASE &divider) {
+BigInteger BigInteger::operator/(const BASE &divider) { //простое деление в столбик
+    BigInteger result = BigInteger(Empty, this->availableCoefficients);
+    int residue = 0; //остаток от деления
+    for(int i = 0; i < this->availableCoefficients; i++){
+        BiggerThanBASE dividend = this->coefficients[i] + residue * BASE_SIZE; //деление на i-ом шаге
+        result.coefficients[i] = dividend / divider; //результат деления на i-ом шаге
+        residue = dividend % divider; //остаток от деления на i-ом шаге
+    }
+    return result;
+}
+
+BigInteger BigInteger::operator/=(const BASE &divider) {
+    BigInteger result = this->operator/(divider);
+    *this = result;
+    return *this;
+}
+
+BASE BigInteger::operator%(const BASE &divider) { //то же самое, что и в обычном делении
     BigInteger result = BigInteger(Empty, this->availableCoefficients);
     int residue = 0;
     for(int i = 0; i < this->availableCoefficients; i++){
@@ -289,7 +307,18 @@ BigInteger BigInteger::operator/(const BASE &divider) {
         result.coefficients[i] = dividend / divider;
         residue = dividend % divider;
     }
-    return result;
+    return residue;
 }
 
-
+std::string BigInteger::decimalOutput(){ //перевод в десятичную систему путем последовательного деления
+    BigInteger quotient = *this; //результат деления - изначально равен самому числу
+    int residue = 0;  //остаток от деления
+    std::string result; //запись остатков в прямом порядке
+    while(quotient != BigInteger(Empty, 1)){ //делим пока есть что делить
+        residue = quotient % (10);
+        quotient = quotient / (10);
+        result += (char)residue + '0'; //добавляем элемент к строке
+    }
+    reverse(result.begin(), result.end()); //разворот остатков в обратный порядок
+    return result; //вообще так можно сделать перевод в любую систему, но не мне, или не на этом языке
+}
