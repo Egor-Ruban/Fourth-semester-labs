@@ -2,7 +2,7 @@
 #include "BigInteger.h"
 
 int main() {
-    while(true) {
+    while(true) { //для дебага
         BigInteger bi = BigInteger(BigInteger::Random, 5);
         BigInteger bi2;
         std::cin >> bi;

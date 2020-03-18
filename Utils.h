@@ -20,16 +20,3 @@ unsigned int hexToInteger(char digit){
     }
     return newPart;
 }
-
-std::string cutUnusedSymbols(std::string inputHex){
-    std::string outputHex;
-    bool isFirst = true;
-    for(char symbol : inputHex){
-        if(isFirst && symbol == '0'){
-        } else {
-            isFirst = false;
-            outputHex += symbol;
-        }
-    }
-    return outputHex;
-}

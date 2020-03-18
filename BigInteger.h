@@ -11,9 +11,12 @@ typedef long long BiggerThanBASE;
 
 class BigInteger {
 
-    BASE* coefficients;
-    int usedCoefficients;
-    int availableCoefficients;
+    BASE* coefficients; //массив коэффициентов
+    int availableCoefficients; //сколько памяти выделено под них
+    //размера значащих коэффициентов нет, так как все незначащие - нули, не влияют на результат операций
+
+    int countEmptyPlaces() const; //считает нули в начале
+    BigInteger addIndent(int indentSize); //добавляет нули в конец числа (для умножения)
 
 public:
     enum ConstructorTypes{
@@ -30,8 +33,6 @@ public:
     friend std::istream& operator>>(std::istream&, BigInteger&);
 
     int compare(const BigInteger&);
-    int countEmptyPlaces() const;
-    BigInteger addIndent(int indentSize);
     bool operator>(const BigInteger&);
     bool operator<(const BigInteger&);
     bool operator>=(const BigInteger&);
@@ -51,7 +52,7 @@ public:
 
     BigInteger operator-(const BigInteger& object);
     BigInteger operator-=(const BigInteger& object);
-    //todo operator -, operator -=
+
     //todo operator / (BASE) // деление на базу
     //todo operator /, operator %
     //todo 10-ый ввод и вывод
