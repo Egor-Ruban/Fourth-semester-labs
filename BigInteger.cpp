@@ -1,0 +1,253 @@
+//
+// Created by compucter on 10.03.2020.
+//
+
+#include <cstdlib>
+#include <ctime>
+#include <iostream>
+#include "BigInteger.h"
+#include "Utils.h"
+
+BigInteger::BigInteger(ConstructorTypes type, int availableCoefficients) {
+    switch(type){
+        case Default:
+            availableCoefficients = 1;
+            coefficients = new BASE[availableCoefficients];
+            for(int i = 0; i<availableCoefficients; i++){
+                coefficients[i] = 0;
+            }
+            break;
+        case Empty:
+            coefficients = new BASE[availableCoefficients];
+            for(int i = 0; i<availableCoefficients; i++){
+                coefficients[i] = 0;
+            }
+            break;
+        case Random:
+            std::srand(unsigned(std::time(0)));
+            coefficients = new BASE[availableCoefficients];
+            for(int i = 0; i<availableCoefficients; i++){
+                coefficients[i] = std::rand();
+            }
+            break;
+    }
+    this->availableCoefficients = availableCoefficients;
+    this->usedCoefficients = availableCoefficients;
+}
+
+BigInteger::BigInteger(const BigInteger& object) {
+    availableCoefficients = object.availableCoefficients;
+    usedCoefficients = object.usedCoefficients;
+    coefficients = new BASE[availableCoefficients];
+    for(int i = 0; i<usedCoefficients; i++){
+        coefficients[i] = object.coefficients[i];
+    }
+}
+
+BigInteger::~BigInteger() {
+    if(coefficients != nullptr) {
+        delete[](coefficients);
+        coefficients = nullptr;
+    }
+}
+
+std::ostream &operator<<(std::ostream &out, const BigInteger& object) {
+    bool isDeleteZero = true;
+    for(int i = 0; i<object.availableCoefficients; i++){
+        if((object.coefficients[i] != 0 && isDeleteZero) || !isDeleteZero) {
+            for (int j = (BASE_SIZE) - 4; j >= 0; j -= 4) {
+                unsigned char symbol = (object.coefficients[i] >> j) & 15;
+                if((isDeleteZero && symbol != 0) || !isDeleteZero){
+                    out << hex[symbol];
+                    isDeleteZero = false;
+                }
+            }
+        }
+    }
+    if(isDeleteZero) out << 0;
+    return out;
+}
+
+std::istream &operator>>(std::istream &in, BigInteger& object) {
+    std::string rawHexInteger;
+    std::cin>>rawHexInteger;
+    int newSymbolsAmount;
+    if((rawHexInteger.size() * 4 % (BASE_SIZE)) == 0) {
+        newSymbolsAmount = (rawHexInteger.size() * 4)/(BASE_SIZE);
+    } else {
+        newSymbolsAmount = ((rawHexInteger.size() * 4)/(BASE_SIZE)) + 1;
+    }
+
+    object.usedCoefficients = newSymbolsAmount;
+    object.availableCoefficients = newSymbolsAmount;
+    object.coefficients = new BASE[newSymbolsAmount];
+    int coefficientToWrite = object.availableCoefficients - 1;
+    object.coefficients[coefficientToWrite] = 0;
+    unsigned int shift = 0;
+    for(int i = rawHexInteger.size() - 1; i >= 0; i--){
+        if(shift == (BASE_SIZE)){
+            shift = 0;
+            coefficientToWrite--;
+            object.coefficients[coefficientToWrite] = 0;
+        }
+        unsigned int newPart = hexToInteger(rawHexInteger[i]) << shift;
+        object.coefficients[coefficientToWrite] |= newPart;
+        shift+=4;
+    }
+
+    return in;
+}
+
+int BigInteger::compare(const BigInteger &object) {
+    int thisNumberSize = this->availableCoefficients - this->countEmptyPlaces();
+    int objectNumberSize = object.availableCoefficients - object.countEmptyPlaces();
+
+    if(thisNumberSize > objectNumberSize){
+        return 1;
+    }
+    if(objectNumberSize > thisNumberSize){
+        return -1;
+    }
+    for(int i = object.usedCoefficients - 1; i>=0; i--){
+        if(this->coefficients[i] > object.coefficients[i]) return 1;
+        if(this->coefficients[i] < object.coefficients[i]){
+            return -1;}
+    }
+    return 0;
+}
+
+bool BigInteger::operator>(const BigInteger &object) {
+    return this->compare(object) == 1;
+}
+
+bool BigInteger::operator<(const BigInteger &object) {
+    return this->compare(object) == -1;
+}
+
+bool BigInteger::operator>=(const BigInteger &object) {
+    return this->compare(object) >= 0 ;
+}
+
+bool BigInteger::operator<=(const BigInteger &object) {
+    return  this->compare(object) <= 0;
+}
+
+bool BigInteger::operator==(const BigInteger &object) {
+    return this->compare(object) == 0;
+}
+
+bool BigInteger::operator!=(const BigInteger &object) {
+    return this->compare(object) != 0;
+}
+
+BigInteger BigInteger::operator+(const BigInteger &object) { //хорошо бы переделать, остальное уже новое
+    BiggerThanBASE sumOfCoefficients = 0;
+    int maxSize = std::max(object.usedCoefficients, this->usedCoefficients);
+    int thisCurrent = this->usedCoefficients-1;
+    int objectCurrent = object.availableCoefficients - 1;
+    int sumCurrent = maxSize;
+    BigInteger sumResult = BigInteger(ConstructorTypes::Empty, maxSize + 1);
+    while(std::min(thisCurrent,objectCurrent) >= 0){
+        sumOfCoefficients += this->coefficients[thisCurrent] + object.coefficients[objectCurrent];
+        sumResult.coefficients[sumCurrent] = sumOfCoefficients;
+        sumOfCoefficients >>= BASE_SIZE;
+        thisCurrent--;
+        objectCurrent--;
+        sumCurrent--;
+    }
+    if(std::min(thisCurrent, objectCurrent) == thisCurrent){
+        while(objectCurrent >= 0){
+            sumOfCoefficients += 0 + object.coefficients[objectCurrent];
+            sumResult.coefficients[sumCurrent] = sumOfCoefficients;
+            sumOfCoefficients = sumOfCoefficients >> BASE_SIZE;
+            objectCurrent--;
+            sumCurrent--;
+        }
+    } else {
+        while(thisCurrent >= 0){
+            sumOfCoefficients += 0 + this->coefficients[thisCurrent];
+            sumResult.coefficients[sumCurrent] = sumOfCoefficients;
+            sumOfCoefficients = sumOfCoefficients >> BASE_SIZE;
+            thisCurrent--;
+            sumCurrent--;
+        }
+    }
+    sumResult.coefficients[sumCurrent] = sumOfCoefficients;
+    return sumResult;
+}
+
+int BigInteger::countEmptyPlaces() const {
+    int result = 0;
+    for(int i = 0; i < availableCoefficients; i++){
+        if(coefficients[i] == 0){
+            result++;
+        } else {
+            break;
+        }
+    }
+    return 0;
+}
+
+BigInteger BigInteger::operator+=(const BigInteger &object) {
+    BigInteger sum = this->operator+(object);
+    *this = sum;
+    return *this;
+}
+
+BigInteger& BigInteger::operator=(const BigInteger &object) {
+    if(this != &object) {
+        this->availableCoefficients = object.availableCoefficients;
+        this->usedCoefficients = object.usedCoefficients;
+        this->coefficients = new BASE[this->availableCoefficients];
+        for (int i = 0; i < availableCoefficients; i++) {
+            this->coefficients[i] = object.coefficients[i];
+        }
+    }
+    return *this;
+}
+
+BigInteger BigInteger::operator*(const BASE &secondFactor) {
+    BigInteger result = BigInteger(Empty,availableCoefficients + 1);
+    BiggerThanBASE residueKeeper = 0;
+    for(int i = result.availableCoefficients; i >= 0; i--){
+        BASE firstFactor;
+        if(i == 0) firstFactor = 0;
+        else firstFactor = this->coefficients[i-1];
+        residueKeeper += firstFactor * secondFactor;
+        result.coefficients[i] = residueKeeper;
+        residueKeeper>>=(BASE_SIZE);
+    }
+    return result;
+}
+
+BigInteger BigInteger::operator*(const BigInteger &object) {
+    int indent = 0;
+    BigInteger result;
+    for(int i = object.availableCoefficients - 1; i >= 0; i--){
+        result += (this->operator*(object.coefficients[i])).addIndent(indent);
+        indent++;
+    }
+    return result;
+}
+
+BigInteger BigInteger::addIndent(int indentSize) {
+    BigInteger result = BigInteger(Empty, this->availableCoefficients + indentSize);
+    for(int i = 0; i < this->availableCoefficients; i++){
+        result.coefficients[i] = this->coefficients[i];
+    }
+    return result;
+}
+
+BigInteger BigInteger::operator*=(const BASE &secondFactor) {
+    BigInteger result = this->operator*(secondFactor);
+    *this = result;
+    return *this;
+}
+
+BigInteger BigInteger::operator*=(const BigInteger &object) {
+    BigInteger result = this->operator*(object);
+    *this = result;
+    return *this;
+}
+
+
