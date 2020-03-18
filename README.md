@@ -12,7 +12,7 @@
 7. ~~функция сравнения 2-х БЧ и, с ее использованием,~~
 8. ~~операции: >,<,>=,<=,==,!=~~
 9. ~~operator +, operator +=~~
-10. operator -, operator -=
+10. ~~operator -, operator -=~~
 11. ~~operator * (BASE) // умножение на базу~~
 12. ~~operator *~~
 13. operator / (BASE) // деление на базу
