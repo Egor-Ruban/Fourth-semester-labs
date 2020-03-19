@@ -15,6 +15,6 @@
 10. ~~operator -, operator -=~~
 11. ~~operator * (BASE) // умножение на базу~~
 12. ~~operator *~~
-13. operator / (BASE) // деление на базу
-14. operator /, operator %
-15. 10-ый ввод и вывод
+13. ~~operator / (BASE) // деление на базу~~
+14. ~~operator /, operator %~~
+15. ~~10-ый ввод и вывод~~
