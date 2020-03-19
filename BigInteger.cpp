@@ -170,7 +170,7 @@ int BigInteger::countEmptyPlaces() const { //возвращает колличе
     return result;
 }
 
-BigInteger BigInteger::operator+=(const BigInteger &object) {
+BigInteger& BigInteger::operator+=(const BigInteger &object) {
     BigInteger sum = this->operator+(object);
     *this = sum;
     return *this;
@@ -220,13 +220,13 @@ BigInteger BigInteger::addIndent(int indentSize) { //создает новый �
     return result;
 }
 
-BigInteger BigInteger::operator*=(const BASE &secondFactor) {
+BigInteger& BigInteger::operator*=(const BASE &secondFactor) {
     BigInteger result = this->operator*(secondFactor);
     *this = result;
     return *this;
 }
 
-BigInteger BigInteger::operator*=(const BigInteger &object) {
+BigInteger& BigInteger::operator*=(const BigInteger &object) {
     BigInteger result = this->operator*(object);
     *this = result;
     return *this;
@@ -262,7 +262,7 @@ BigInteger BigInteger::operator-(const BigInteger &object) {
     return result;
 }
 
-BigInteger BigInteger::operator-=(const BigInteger &object) {
+BigInteger& BigInteger::operator-=(const BigInteger &object) {
     BigInteger result = this->operator-(object);
     *this = result;
     return *this;
@@ -279,7 +279,7 @@ BigInteger BigInteger::operator/(const BASE &divider) { //простое дел�
     return result;
 }
 
-BigInteger BigInteger::operator/=(const BASE &divider) {
+BigInteger& BigInteger::operator/=(const BASE &divider) {
     BigInteger result = this->operator/(divider);
     *this = result;
     return *this;
@@ -363,4 +363,10 @@ BigInteger BigInteger::operator%(BigInteger &divider) {
         }
     }
     return residue;
+}
+
+BigInteger& BigInteger::operator/=(BigInteger &divider) {
+    BigInteger result = this->operator/(divider);
+    *this = result;
+    return *this;
 }

@@ -44,19 +44,20 @@ public:
     BigInteger& operator=(const BigInteger& object);
 
     BigInteger operator+(const BigInteger& object);
-    BigInteger operator+=(const BigInteger& object);
+    BigInteger& operator+=(const BigInteger& object);
 
     BigInteger operator*(const BASE& secondFactor);
-    BigInteger operator*=(const BASE& secondFactor);
+    BigInteger& operator*=(const BASE& secondFactor);
     BigInteger operator*(const BigInteger& object);
-    BigInteger operator*=(const BigInteger& object);
+    BigInteger& operator*=(const BigInteger& object);
 
     BigInteger operator-(const BigInteger& object);
-    BigInteger operator-=(const BigInteger& object);
+    BigInteger& operator-=(const BigInteger& object);
 
     BigInteger operator/(const BASE& divider);
-    BigInteger operator/=(const BASE& divider);
+    BigInteger& operator/=(const BASE& divider);
     BigInteger operator/(BigInteger& divider);
+    BigInteger& operator/=(BigInteger& divider);
 
     BASE operator%(const BASE& divider);
     BigInteger operator%(BigInteger& divider);
