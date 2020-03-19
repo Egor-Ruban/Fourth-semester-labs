@@ -31,7 +31,8 @@ int main() {
         //std::string str = bi.outputDecimal();
         //std::cout << "dec Out " << str << std::endl;
         //std::cout << "dec In " << BigInteger::inputDecimal(str) << std::endl;
-        std::cout<<" / "<<(bi / bi2)<<std::endl;
+        //std::cout<<" / "<<(bi / bi2)<<std::endl;
+        //std::cout<<" % "<<(bi % bi2)<<std::endl;
     }
     return 0;
 }

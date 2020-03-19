@@ -32,6 +32,11 @@ BigInteger::BigInteger(ConstructorTypes type, int availableCoefficients) {
                 coefficients[i] = std::rand();
             }
             break;
+        case Digit:
+            coefficients = new BASE[1];
+            coefficients[0] = availableCoefficients;
+            availableCoefficients = 1;
+            break;
     }
     this->availableCoefficients = availableCoefficients;
 }
@@ -319,28 +324,43 @@ BigInteger BigInteger::inputDecimal(std::string decimalInput) {
 }
 
 BigInteger BigInteger::operator/(BigInteger &divider) {
-    BigInteger result = BigInteger(Empty, availableCoefficients);
+    BigInteger result = BigInteger(Empty, availableCoefficients); //тут будет результат деления
     BigInteger residue;
-    BigInteger hundred = BigInteger(Empty, 2);
-    hundred.coefficients[0] = 1;
+    BigInteger ten = BigInteger(Empty, 2); //просто десятка для умножения
+    ten.coefficients[0] = 1;
     for(int i = 0; i < this->availableCoefficients; i++){
-        BigInteger t;
-        t.coefficients[0] = this->coefficients[i];
-        BigInteger dividend =  t + (residue * hundred);
-        if(dividend > divider){
+        BigInteger dividend = BigInteger(Digit, coefficients[i]) + (residue * ten); //делимое
+        if(dividend > divider){ //если делимое на шаге больше делителя, то ищем результат деления на шаге
             BASE j = 1;
-            BigInteger re = divider;
-            BigInteger re2 = divider;
-            while(dividend > (re)){
-                re += re2;
+            while(dividend > (divider * j)){ //ищем, на что надо умножить делитель, чтобы он стал больше делимого
                 j++;
             }
-            j--;
-            result.coefficients[i] = j;
-            residue = dividend - (divider * j);
+            j--; //уменьшаемое найденное число - получаем результат деления
+            result.coefficients[i] = j; //записываем его в результат
+            residue = dividend - (divider * j); //находим остаток от деления
         } else {
             residue = dividend;
         }
     }
     return result;
+}
+
+BigInteger BigInteger::operator%(BigInteger &divider) {
+    BigInteger residue;
+    BigInteger ten = BigInteger(Empty, 2); //просто десятка для умножения
+    ten.coefficients[0] = 1;
+    for(int i = 0; i < this->availableCoefficients; i++){
+        BigInteger dividend = BigInteger(Digit, coefficients[i]) + (residue * ten); //делимое
+        if(dividend > divider){ //если делимое на шаге больше делителя, то ищем результат деления на шаге
+            BASE j = 1;
+            while(dividend > (divider * j)){ //ищем, на что надо умножить делитель, чтобы он стал больше делимого
+                j++;
+            }
+            j--; //уменьшаемое найденное число - получаем результат деления
+            residue = dividend - (divider * j); //находим остаток от деления
+        } else {
+            residue = dividend;
+        }
+    }
+    return residue;
 }

@@ -22,7 +22,8 @@ public:
     enum ConstructorTypes{
         Default,
         Empty,
-        Random
+        Random,
+        Digit
     };
 
     BigInteger(ConstructorTypes = Default, int = 1);
@@ -53,11 +54,12 @@ public:
     BigInteger operator-(const BigInteger& object);
     BigInteger operator-=(const BigInteger& object);
 
-    BigInteger operator /(const BASE& divider);
+    BigInteger operator/(const BASE& divider);
     BigInteger operator/=(const BASE& divider);
     BigInteger operator/(BigInteger& divider);
 
     BASE operator%(const BASE& divider);
+    BigInteger operator%(BigInteger& divider);
 
     std::string outputDecimal();
     static BigInteger inputDecimal(std::string decimalInput);
