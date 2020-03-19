@@ -33,34 +33,34 @@ public:
     friend std::ostream& operator<<(std::ostream&, const BigInteger&);
     friend std::istream& operator>>(std::istream&, BigInteger&);
 
-    int compare(const BigInteger&);
-    bool operator>(const BigInteger&);
-    bool operator<(const BigInteger&);
-    bool operator>=(const BigInteger&);
-    bool operator<=(const BigInteger&);
-    bool operator==(const BigInteger&);
-    bool operator!=(const BigInteger&);
+    int compare(const BigInteger&)const ;
+    bool operator>(const BigInteger&)const ;
+    bool operator<(const BigInteger&)const ;
+    bool operator>=(const BigInteger&)const ;
+    bool operator<=(const BigInteger&)const ;
+    bool operator==(const BigInteger&)const ;
+    bool operator!=(const BigInteger&)const ;
 
     BigInteger& operator=(const BigInteger& object);
 
     BigInteger operator+(const BigInteger& object);
     BigInteger& operator+=(const BigInteger& object);
 
-    BigInteger operator*(const BASE& secondFactor);
+    BigInteger operator*(const BASE& secondFactor) const;
     BigInteger& operator*=(const BASE& secondFactor);
-    BigInteger operator*(const BigInteger& object);
+    BigInteger operator*(const BigInteger& object) const;
     BigInteger& operator*=(const BigInteger& object);
 
-    BigInteger operator-(const BigInteger& object);
+    BigInteger operator-(const BigInteger& object) const;
     BigInteger& operator-=(const BigInteger& object);
 
-    BigInteger operator/(const BASE& divider);
+    BigInteger operator/(const BASE& divider) const;
     BigInteger& operator/=(const BASE& divider);
-    BigInteger operator/(BigInteger& divider);
-    BigInteger& operator/=(BigInteger& divider);
+    BigInteger operator/(const BigInteger& divider) const;
+    BigInteger& operator/=(const BigInteger& divider);
 
-    BASE operator%(const BASE& divider);
-    BigInteger operator%(BigInteger& divider);
+    BASE operator%(const BASE& divider) const;
+    BigInteger operator%(const BigInteger& divider) const;
 
     std::string outputDecimal();
     static BigInteger inputDecimal(std::string decimalInput);

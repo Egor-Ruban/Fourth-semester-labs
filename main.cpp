@@ -2,8 +2,6 @@
 #include "BigInteger.h"
 
 int main() {
-    BigInteger position = BigInteger(BigInteger::Empty);
-    position.coefficients[0] = 1;
     while(true) { //для дебага
         BigInteger bi = BigInteger(BigInteger::Random, 5);
         BigInteger bi2;

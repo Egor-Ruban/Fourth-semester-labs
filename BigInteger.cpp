@@ -98,7 +98,7 @@ std::istream &operator>>(std::istream &in, BigInteger& object) { //ввод в h
     return in;
 }
 
-int BigInteger::compare(const BigInteger &object) {
+int BigInteger::compare(const BigInteger &object) const{
     int thisNumberSize = this->availableCoefficients - this->countEmptyPlaces(); //кол-во значащих коэффициентов
     int objectNumberSize = object.availableCoefficients - object.countEmptyPlaces(); //кол-во значащих коэффициентов
     if(thisNumberSize > objectNumberSize){
@@ -116,27 +116,27 @@ int BigInteger::compare(const BigInteger &object) {
     return 0;
 }
 
-bool BigInteger::operator>(const BigInteger &object) {
+bool BigInteger::operator>(const BigInteger &object) const{
     return this->compare(object) == 1;
 }
 
-bool BigInteger::operator<(const BigInteger &object) {
+bool BigInteger::operator<(const BigInteger &object) const {
     return this->compare(object) == -1;
 }
 
-bool BigInteger::operator>=(const BigInteger &object) {
+bool BigInteger::operator>=(const BigInteger &object) const {
     return this->compare(object) >= 0 ;
 }
 
-bool BigInteger::operator<=(const BigInteger &object) {
+bool BigInteger::operator<=(const BigInteger &object) const {
     return  this->compare(object) <= 0;
 }
 
-bool BigInteger::operator==(const BigInteger &object) {
+bool BigInteger::operator==(const BigInteger &object) const {
     return this->compare(object) == 0;
 }
 
-bool BigInteger::operator!=(const BigInteger &object) {
+bool BigInteger::operator!=(const BigInteger &object) const {
     return this->compare(object) != 0;
 }
 
@@ -187,7 +187,7 @@ BigInteger& BigInteger::operator=(const BigInteger &object) {
     return *this;
 }
 
-BigInteger BigInteger::operator*(const BASE &secondFactor) {
+BigInteger BigInteger::operator*(const BASE &secondFactor) const{
     BigInteger result = BigInteger(Empty,availableCoefficients + 1);
     BiggerThanBASE residueKeeper = 0; //хранит перенос
     for(int i = result.availableCoefficients - 1; i >= 0; i--){
@@ -201,7 +201,7 @@ BigInteger BigInteger::operator*(const BASE &secondFactor) {
     return result;
 }
 
-BigInteger BigInteger::operator*(const BigInteger &object) {
+BigInteger BigInteger::operator*(const BigInteger &object) const{
     int indent = 0; //показывает, сколько нулей нужно добавить в конце числа
     BigInteger result;
     for(int i = object.availableCoefficients - 1; i >= 0; i--){
@@ -232,7 +232,7 @@ BigInteger& BigInteger::operator*=(const BigInteger &object) {
     return *this;
 }
 
-BigInteger BigInteger::operator-(const BigInteger &object) {
+BigInteger BigInteger::operator-(const BigInteger &object) const {
     BigInteger biggerInteger; //необходимо на случай, если первое число будет меньше - оператор вернет модуль разности
     BigInteger lesserInteger; //аналогично
     if(*this >= object) {
@@ -268,7 +268,7 @@ BigInteger& BigInteger::operator-=(const BigInteger &object) {
     return *this;
 }
 
-BigInteger BigInteger::operator/(const BASE &divider) { //простое деление в столбик
+BigInteger BigInteger::operator/(const BASE &divider) const { //простое деление в столбик
     BigInteger result = BigInteger(Empty, this->availableCoefficients);
     BiggerThanBASE residue = 0; //остаток от деления
     for(int i = 0; i < this->availableCoefficients; i++){
@@ -285,7 +285,7 @@ BigInteger& BigInteger::operator/=(const BASE &divider) {
     return *this;
 }
 
-BASE BigInteger::operator%(const BASE &divider) { //то же самое, что и в обычном делении
+BASE BigInteger::operator%(const BASE &divider) const { //то же самое, что и в обычном делении
     BigInteger result = BigInteger(Empty, this->availableCoefficients);
     BiggerThanBASE residue = 0;
     for(int i = 0; i < this->availableCoefficients; i++){
@@ -323,7 +323,7 @@ BigInteger BigInteger::inputDecimal(std::string decimalInput) {
     return baseInput;
 }
 
-BigInteger BigInteger::operator/(BigInteger &divider) {
+BigInteger BigInteger::operator/(const BigInteger &divider) const {
     BigInteger result = BigInteger(Empty, availableCoefficients); //тут будет результат деления
     BigInteger residue;
     BigInteger ten = BigInteger(Empty, 2); //просто десятка для умножения
@@ -345,7 +345,7 @@ BigInteger BigInteger::operator/(BigInteger &divider) {
     return result;
 }
 
-BigInteger BigInteger::operator%(BigInteger &divider) {
+BigInteger BigInteger::operator%(const BigInteger &divider) const {
     BigInteger residue;
     BigInteger ten = BigInteger(Empty, 2); //просто десятка для умножения
     ten.coefficients[0] = 1;
@@ -365,7 +365,7 @@ BigInteger BigInteger::operator%(BigInteger &divider) {
     return residue;
 }
 
-BigInteger& BigInteger::operator/=(BigInteger &divider) {
+BigInteger& BigInteger::operator/=(const BigInteger &divider){
     BigInteger result = this->operator/(divider);
     *this = result;
     return *this;
