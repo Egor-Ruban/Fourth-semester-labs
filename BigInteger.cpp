@@ -218,9 +218,8 @@ BigInteger BigInteger::operator*(const BigInteger &object) {
     int indent = 0; //показывает, сколько нулей нужно добавить в конце числа
     BigInteger result;
     for(int i = object.availableCoefficients - 1; i >= 0; i--){
-        BigInteger f = (this->operator*(object.coefficients[i])).addIndent(indent);
-        std::cout<<f<<std::endl;
-        result += f; //умножение столбиком
+        BigInteger res = (this->operator*(object.coefficients[i])).addIndent(indent);
+        result += res;
         indent++;
     }
     return result;
@@ -284,16 +283,12 @@ BigInteger BigInteger::operator-=(const BigInteger &object) {
 }
 
 BigInteger BigInteger::operator/(const BASE &divider) { //простое деление в столбик
-    std::cout<<(int)divider<<std::endl;
     BigInteger result = BigInteger(Empty, this->availableCoefficients);
     BiggerThanBASE residue = 0; //остаток от деления
     for(int i = 0; i < this->availableCoefficients; i++){
         BiggerThanBASE dividend = this->coefficients[i] + residue * pow(2,BASE_SIZE); //деление на i-ом шаге
-        std::cout<<"dvdnd "<<(int)dividend<<std::endl;
         result.coefficients[i] = dividend / divider; //результат деления на i-ом шаге
-        std::cout<<"rst "<<dividend/divider<<std::endl;
         residue = dividend % divider; //остаток от деления на i-ом шаге
-        std::cout<<"res "<<residue<<std::endl;
     }
     return result;
 }
@@ -316,14 +311,12 @@ BASE BigInteger::operator%(const BASE &divider) { //то же самое, что
 }
 
 std::string BigInteger::outputDecimal(){ //перевод в десятичную систему путем последовательного деления
-    std::cout<<"got: "<<*this<<std::endl;
     BigInteger quotient = *this; //результат деления - изначально равен самому числу
     int residue = 0;  //остаток от деления
     std::string result; //запись остатков в прямом порядке
     do{ //делим пока есть что делить
         residue = quotient % (10);
         quotient = quotient / (10);
-        std::cout<<"res "<<residue<<std::endl;
         result += ((char)residue + '0'); //добавляем элемент к строке
     }while(quotient != BigInteger(Empty, 1));
     reverse(result.begin(), result.end()); //разворот остатков в обратный порядок
@@ -331,14 +324,15 @@ std::string BigInteger::outputDecimal(){ //перевод в десятичну�
 }
 
 BigInteger BigInteger::inputDecimal(std::string decimalInput) {
-    int position = 1; //какой коэффициент десятичного числа рассматриваем
+    BigInteger position = BigInteger();
+    position.coefficients[0] = 1;//какой коэффициент десятичного числа рассматриваем
     reverse(decimalInput.begin(), decimalInput.end()); //развернул число для удобства работы
     BigInteger baseInput = BigInteger(Empty, 1);
     for(char digit : decimalInput){
         BigInteger f = BigInteger(Default);
-        f.coefficients[0] = (digit - 48);
-        baseInput = baseInput + (f * position);
-        position *= 10;
+        f.coefficients[0] = (digit - '0');
+        baseInput += (f * position);
+        position *= 0xA;
     }
     return baseInput;
 }
