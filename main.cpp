@@ -18,7 +18,7 @@ int main() {
         //std::cout<<"<="<<(bi <= bi2)<<std::endl;
         //std::cout<<"=="<<(bi == bi2)<<std::endl;
         //std::cout<<"!="<<(bi != bi2)<<std::endl;
-        std::cout<<" + "<< (bi + bi2)<<std::endl;
+        //std::cout<<" + "<< bi + bi2<<std::endl;
         //bi+=bi2;
         //std::cout<<" += "<<bi<<std::endl;
         //std::cout<<" * "<<(bi * bi2)<<std::endl;
@@ -31,14 +31,7 @@ int main() {
         //std::string str = bi.outputDecimal();
         //std::cout << "dec Out " << str << std::endl;
         //std::cout << "dec In " << BigInteger::inputDecimal(str) << std::endl;
-        //BigInteger bi3 = BigInteger(BigInteger::Empty);
-        //std::cout<<bi3<<std::endl;
-        //bi3.coefficients[0] = 1;
-        //std::cout<<bi3<<std::endl;
-        //BigInteger bi4 = bi3 * position;
-        //std::cout<<bi4<<std::endl;
-        //position *= 0x10;
-        //std::cout<<position<<std::endl;
+        std::cout<<" / "<<(bi / bi2)<<std::endl;
     }
     return 0;
 }

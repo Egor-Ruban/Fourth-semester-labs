@@ -143,7 +143,7 @@ BigInteger BigInteger::operator+(const BigInteger &object) { //некрасив�
     int sumIndex = maxSize; //индекс элемента в результате
     BigInteger sumResult(ConstructorTypes::Empty, maxSize + 1);
     for(;sumIndex >= 0; sumIndex--, thisIndex--, objectIndex--){
-        BASE firstAdd = 0, secondAdd = 0;
+        BASE firstAdd = 0, secondAdd = 0; //если число кончится, то соответсвующее слагаемое будет равно нулю
         if(thisIndex >= 0) firstAdd = this->coefficients[thisIndex];
         if(objectIndex >= 0) secondAdd = object.coefficients[objectIndex];
         currentSum += firstAdd + secondAdd;
@@ -316,4 +316,31 @@ BigInteger BigInteger::inputDecimal(std::string decimalInput) {
         position *= 0xA;
     }
     return baseInput;
+}
+
+BigInteger BigInteger::operator/(BigInteger &divider) {
+    BigInteger result = BigInteger(Empty, availableCoefficients);
+    BigInteger residue;
+    BigInteger hundred = BigInteger(Empty, 2);
+    hundred.coefficients[0] = 1;
+    for(int i = 0; i < this->availableCoefficients; i++){
+        BigInteger t;
+        t.coefficients[0] = this->coefficients[i];
+        BigInteger dividend =  t + (residue * hundred);
+        if(dividend > divider){
+            BASE j = 1;
+            BigInteger re = divider;
+            BigInteger re2 = divider;
+            while(dividend > (re)){
+                re += re2;
+                j++;
+            }
+            j--;
+            result.coefficients[i] = j;
+            residue = dividend - (divider * j);
+        } else {
+            residue = dividend;
+        }
+    }
+    return result;
 }

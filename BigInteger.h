@@ -5,7 +5,7 @@
 #ifndef BIGINTEGER_BIGINTEGER_H
 #define BIGINTEGER_BIGINTEGER_H
 
-typedef unsigned short BASE; //только char или short
+typedef unsigned char BASE; //только char или short
 typedef long long BiggerThanBASE;
 #define BASE_SIZE 8 * sizeof(BASE)
 
@@ -55,6 +55,7 @@ public:
 
     BigInteger operator /(const BASE& divider);
     BigInteger operator/=(const BASE& divider);
+    BigInteger operator/(BigInteger& divider);
 
     BASE operator%(const BASE& divider);
 
