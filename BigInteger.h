@@ -64,7 +64,6 @@ public:
 
     std::string outputDecimal();
     static BigInteger inputDecimal(std::string decimalInput);
-    //todo operator /, operator %
 };
 
 
