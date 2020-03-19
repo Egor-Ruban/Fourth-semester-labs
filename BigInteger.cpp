@@ -364,3 +364,9 @@ BigInteger BigInteger::operator%(BigInteger &divider) {
     }
     return residue;
 }
+
+BigInteger BigInteger::operator/=(BigInteger &divider) {
+    BigInteger result = this->operator/(divider);
+    *this = result;
+    return *this;
+}

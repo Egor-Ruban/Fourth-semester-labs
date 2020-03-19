@@ -57,6 +57,7 @@ public:
     BigInteger operator/(const BASE& divider);
     BigInteger operator/=(const BASE& divider);
     BigInteger operator/(BigInteger& divider);
+    BigInteger operator/=(BigInteger& divider);
 
     BASE operator%(const BASE& divider);
     BigInteger operator%(BigInteger& divider);
