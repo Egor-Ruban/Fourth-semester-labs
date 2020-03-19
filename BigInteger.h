@@ -60,9 +60,7 @@ public:
 
     std::string outputDecimal();
     static BigInteger inputDecimal(std::string decimalInput);
-    //todo operator / (BASE) // деление на базу
     //todo operator /, operator %
-    //todo 10-ый ввод и вывод
 };
 
 

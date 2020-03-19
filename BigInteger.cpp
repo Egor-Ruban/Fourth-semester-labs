@@ -136,38 +136,20 @@ bool BigInteger::operator!=(const BigInteger &object) {
 }
 
 BigInteger BigInteger::operator+(const BigInteger &object) { //некрасивое сложение
-    BiggerThanBASE sumOfCoefficients = 0;
+    BiggerThanBASE currentSum = 0;
     int maxSize = std::max(object.availableCoefficients, this->availableCoefficients);
-    int thisCurrent = this->availableCoefficients - 1; //индекс элемента в this
-    int objectCurrent = object.availableCoefficients - 1; //индекс элемента в object
-    int sumCurrent = maxSize; //индекс элемента в результате
+    int thisIndex = this->availableCoefficients - 1; //индекс элемента в this
+    int objectIndex = object.availableCoefficients - 1; //индекс элемента в object
+    int sumIndex = maxSize; //индекс элемента в результате
     BigInteger sumResult(ConstructorTypes::Empty, maxSize + 1);
-    while(std::min(thisCurrent,objectCurrent) >= 0){ //складываем, пока в наименьшем числе есть что складывать
-        sumOfCoefficients += this->coefficients[thisCurrent] + object.coefficients[objectCurrent];
-        sumResult.coefficients[sumCurrent] = sumOfCoefficients;
-        sumOfCoefficients >>= BASE_SIZE; //сохраняет перенос
-        thisCurrent--;
-        objectCurrent--;
-        sumCurrent--;
+    for(;sumIndex >= 0; sumIndex--, thisIndex--, objectIndex--){
+        BASE firstAdd = 0, secondAdd = 0;
+        if(thisIndex >= 0) firstAdd = this->coefficients[thisIndex];
+        if(objectIndex >= 0) secondAdd = object.coefficients[objectIndex];
+        currentSum += firstAdd + secondAdd;
+        sumResult.coefficients[sumIndex] = currentSum;
+        currentSum >>= BASE_SIZE;
     }
-    if(std::min(thisCurrent, objectCurrent) == thisCurrent){ //больше if`ов богу if`ов
-        while(objectCurrent >= 0){ //складываем оставшуюся часть большего числа с переносом
-            sumOfCoefficients += 0 + object.coefficients[objectCurrent];
-            sumResult.coefficients[sumCurrent] = sumOfCoefficients;
-            sumOfCoefficients = sumOfCoefficients >> BASE_SIZE;
-            objectCurrent--;
-            sumCurrent--;
-        }
-    } else {
-        while(thisCurrent >= 0){   //складываем оставшуюся часть большего числа с переносом
-            sumOfCoefficients += 0 + this->coefficients[thisCurrent];
-            sumResult.coefficients[sumCurrent] = sumOfCoefficients;
-            sumOfCoefficients = sumOfCoefficients >> BASE_SIZE;
-            thisCurrent--;
-            sumCurrent--;
-        }
-    }
-    sumResult.coefficients[sumCurrent] = sumOfCoefficients; //если сумма оказалась больше начальных чисел, то вот
     return sumResult;
 }
 
@@ -251,8 +233,7 @@ BigInteger BigInteger::operator-(const BigInteger &object) {
     if(*this >= object) {
         biggerInteger = *this;
         lesserInteger = object;
-    }
-    else {
+    }    else {
         lesserInteger = *this;
         biggerInteger = object;
     }
