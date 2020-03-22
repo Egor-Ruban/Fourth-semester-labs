@@ -1,4 +1,4 @@
-# Fourth-semester-labs#
+# Fourth-semester-labs
 
 ## Двоичные деревья поиска
 
