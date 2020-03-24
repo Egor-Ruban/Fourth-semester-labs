@@ -3,4 +3,4 @@ project(SearchTree)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(SearchTree main.cpp)
+add_executable(SearchTree main.cpp Node.cpp Node.h Utils.h)
