@@ -8,7 +8,8 @@ int main() {
         Node h = Node(4, pow(2, 5), 200);
         Node* f = h.left;
         Node* g = f->left;
-        std::cout<<f->left->value<<" "<<f->right->value<<std::endl;
+        std::cout<<"\n\n"<<f<<" "<<&h<<std::endl;
+        std::cout<<f->value<<" "<<f->right->value<<std::endl;
     return 0;
 }
 

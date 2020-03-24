@@ -18,12 +18,16 @@ Node::Node(int layers, int notLessThan, int notMoreThan) {
     }
     std::cout << "key " << value << " layer " << layers << std::endl;
     if(layers != 1) {
-        Node l(layers - 1, notLessThan - pow(2, layers - 1), value - 1);
-        this->left = &l;
-        Node r(layers - 1, value + pow(2,layers - 1), notMoreThan - 1);
-        this->right = &r;
+        this->left = new Node(layers - 1, notLessThan - pow(2, layers - 1), value - 1);
+        this->right = new Node(layers - 1, value + pow(2,layers - 1), notMoreThan - 1);
     } else {
         left = nullptr;
         right = nullptr;
     }
+    std::cout<<this<<" "<<this->value<<' '<<this->left<<" "<<this->right<<std::endl;
+}
+
+Node::~Node() {
+
+    std::cout<<"destruction "<<this<<std::endl;
 }
