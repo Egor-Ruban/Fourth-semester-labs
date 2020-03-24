@@ -11,7 +11,9 @@ public:
     Node* left;
     Node* right;
     int value;
-    Node(int layers = 4, int notLessThan = 32, int notMoreThan = 200);//полное дерево высотой layers огранич. в root
+    Node(int layers, int notLessThan , int notMoreThan);//полное дерево высотой layers огранич. в root
+    Node(int valueOfRoot = 0);
+    Node(Node& object);
 
     ~Node();
 };

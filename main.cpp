@@ -5,11 +5,10 @@
 
 int main() {
     std::srand(unsigned(std::time(0)));
-        Node h = Node(4, pow(2, 5), 200);
-        Node* f = h.left;
-        Node* g = f->left;
-        std::cout<<"\n\n"<<f<<" "<<&h<<std::endl;
-        std::cout<<f->value<<" "<<f->right->value<<std::endl;
+        Node h(4, pow(2, 5), 200);
+        Node f(h);
+        std::cout<<"\n\n"<<&f<<" "<<&h<<std::endl;
+        std::cout<<f.value<<" "<<f.right->value<<std::endl;
     return 0;
 }
 
