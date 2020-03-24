@@ -49,3 +49,18 @@ Node::Node(Node &object) {
         this->right = nullptr;
     }
 }
+
+Node &Node::operator=(const Node &object) {
+    this->value = object.value;
+    if(object.left != nullptr) {
+        this->left = new Node(*object.left);
+    } else {
+        this->left = nullptr;
+    }
+    if(object.right != nullptr) {
+        this->right = new Node(*object.right);
+    } else {
+        this->right = nullptr;
+    }
+    return *this;
+}

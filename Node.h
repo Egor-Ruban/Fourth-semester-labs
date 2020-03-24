@@ -16,6 +16,8 @@ public:
     Node(Node& object);
 
     ~Node();
+
+    Node& operator=(const Node& object);
 };
 
 
