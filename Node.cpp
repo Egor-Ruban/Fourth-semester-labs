@@ -17,10 +17,10 @@ Node::Node(int layers, int notLessThan, int notMoreThan, Node* parent) {//ген
     } else {
         this->value = notLessThan + rand()%(int)(notMoreThan - notLessThan);
     }
-    std::cout<<"layer: "<<layers<<" value: "<<value<<std::endl;
+    std::cout<<"layer: "<<layers<<" value: "<<value<<" nmt "<<notMoreThan<<" nlt "<<notLessThan<<std::endl;
     if(layers != 1) {
-        this->left = new Node(layers - 1, notLessThan - pow(2, layers - 1), value - 1, parent);
-        this->right = new Node(layers - 1, value + pow(2,layers - 1), notMoreThan - 1, parent);
+        this->left = new Node(layers - 1, notLessThan - pow(2, layers - 2), value - 1, parent);
+        this->right = new Node(layers - 1, value + pow(2,layers - 2), notMoreThan - 1, parent);
     } else {
         left = nullptr;
         right = nullptr;
@@ -161,10 +161,16 @@ void Node::printByLayers() {
     std::queue<Node*> queue;
     queue.push(this);
     while(!queue.empty()){
-        Node* g = queue.front();
+        Node* temp = queue.front();
         queue.pop();
-        if(g->left != nullptr) queue.push(g->left);
-        if(g->right != nullptr) queue.push(g->right);
-        std::cout<<g->value<<",";
+        if(temp->left != nullptr) queue.push(temp->left);
+        if(temp->right != nullptr) queue.push(temp->right);
+        std::cout << temp->value << ",";
     }
+}
+
+void Node::recursivePrint() {
+    std::cout<<this->value<<",";
+    if(this->left != nullptr) this->left->recursivePrint();
+    if(this->right != nullptr) this->right->recursivePrint();
 }

@@ -26,6 +26,7 @@ public:
     int getMinValue();
     int getMaxValue();
     void printByLayers();
+    void recursivePrint(); //обход влево в глубину (КЛП вроде)
 };
 
 
