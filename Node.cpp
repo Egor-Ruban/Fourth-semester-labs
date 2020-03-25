@@ -9,15 +9,16 @@
 #include "Utils.h"
 #include "Node.h"
 
-Node::Node(int layers, int notLessThan, int notMoreThan) {//генерирует поддерево поиска, с ограниченным корнем
+Node::Node(int layers, int notLessThan, int notMoreThan, Node* parent) {//генерирует поддерево поиска, с ограниченным корнем
+    this->parent = parent;
     if(notLessThan == notMoreThan){
         value = notLessThan;
     } else {
         this->value = notLessThan + rand()%(int)(notMoreThan - notLessThan);
     }
     if(layers != 1) {
-        this->left = new Node(layers - 1, notLessThan - pow(2, layers - 1), value - 1);
-        this->right = new Node(layers - 1, value + pow(2,layers - 1), notMoreThan - 1);
+        this->left = new Node(layers - 1, notLessThan - pow(2, layers - 1), value - 1, parent);
+        this->right = new Node(layers - 1, value + pow(2,layers - 1), notMoreThan - 1, parent);
     } else {
         left = nullptr;
         right = nullptr;
@@ -25,18 +26,19 @@ Node::Node(int layers, int notLessThan, int notMoreThan) {//генерирует
 }
 
 Node::~Node() {
-    std::cout<<"destruction "<<this<<std::endl;
     delete(this->left);
     delete(this->right);
 }
 
-Node::Node(int valueOfRoot ) {
+Node::Node(int valueOfRoot, Node* parent) {
     this->value = valueOfRoot;
     this->left = nullptr;
     this->right = nullptr;
+    this->parent = parent;
 }
 
 Node::Node(Node &object) {
+    this->parent = object.parent;
     this->value = object.value;
     if(object.left != nullptr) {
         this->left = new Node(*object.left);
@@ -51,6 +53,7 @@ Node::Node(Node &object) {
 }
 
 Node &Node::operator=(const Node &object) {
+    this->parent = object.parent;
     this->value = object.value;
     if(object.left != nullptr) {
         this->left = new Node(*object.left);
@@ -63,4 +66,72 @@ Node &Node::operator=(const Node &object) {
         this->right = nullptr;
     }
     return *this;
+}
+
+Node *Node::findValue(int value) {
+    if(this->value == value){
+        return this;
+    }
+    if(value < this->value){
+        if(this->left == nullptr){
+            return nullptr;
+        } else {
+            return this->left->findValue(value);
+        }
+    }
+    if(value > this->value){
+        if(this->right == nullptr){
+            return nullptr;
+        } else {
+            return this->right->findValue(value);
+        }
+    }
+    return nullptr;
+}
+
+void Node::insertValue(int value) {
+    if(value == this->value) return;
+    if(value < this->value){
+        if(this->left == nullptr){
+            this->left = new Node(value, this);
+        } else {
+            this->left->insertValue(value);
+        }
+    }
+    if(value > this->value){
+        if(this->right == nullptr){
+            this->right = new Node(value, this);
+        } else {
+            this->right->insertValue(value);
+        }
+    }
+}
+
+void Node::deleteNode(Node *&object) {
+    if(object->left == nullptr && object->right == nullptr){
+        if(object->parent->left == object) object->parent->left = nullptr;
+        else object->parent->right = nullptr;
+        delete(object);
+    } else if(object->left != nullptr && object->right == nullptr){
+        if(object->parent->left == object) object->parent->left = object->left;
+        else object->parent->right = object->left;
+        object->right = nullptr;
+        delete(object);
+    } else if(object->left == nullptr && object->right != nullptr){
+        if(object->parent->left == object) object->parent->left = object->right;
+        else object->parent->right = object->right;
+        object->left = nullptr;
+        delete(object);
+    } else if(object->left != nullptr && object->right != nullptr){
+        Node* temp = object->right;
+        while(temp->left != nullptr){
+            temp = temp->left;
+        }
+        temp->left = object->left;
+        if(object->parent->left == object) object->parent->left = object->right;
+        else object->parent->right = object->right;
+        object->left = nullptr;
+        object->right = nullptr;
+        delete(object);
+    }
 }

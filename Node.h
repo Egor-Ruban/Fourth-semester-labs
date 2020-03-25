@@ -10,14 +10,19 @@ class Node {
 public:
     Node* left;
     Node* right;
+    Node* parent;
     int value;
-    Node(int layers, int notLessThan , int notMoreThan);//полное дерево высотой layers огранич. в root
-    Node(int valueOfRoot = 0);
+    Node(int layers, int notLessThan , int notMoreThan, Node* parent = nullptr);//полное дерево высотой layers огранич. в root
+    Node(int valueOfRoot = 0, Node* parent = nullptr);
     Node(Node& object);
 
     ~Node();
 
     Node& operator=(const Node& object);
+
+    Node* findValue(int value);
+    void insertValue(int value);
+    void deleteNode(Node*& object);
 };
 
 
