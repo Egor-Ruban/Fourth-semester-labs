@@ -23,6 +23,8 @@ public:
     Node* findValue(int value);
     void insertValue(int value);
     void deleteNode(Node*& object);
+    int getMinValue();
+    int getMaxValue();
 };
 
 

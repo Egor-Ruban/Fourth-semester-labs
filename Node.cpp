@@ -23,6 +23,7 @@ Node::Node(int layers, int notLessThan, int notMoreThan, Node* parent) {//ген
         left = nullptr;
         right = nullptr;
     }
+    std::cout<<"layer: "<<layers<<" value: "<<value<<std::endl;
 }
 
 Node::~Node() {
@@ -133,5 +134,23 @@ void Node::deleteNode(Node *&object) {
         object->left = nullptr;
         object->right = nullptr;
         delete(object);
+    }
+}
+
+int Node::getMinValue() {
+    if(this->left == nullptr) return this->value;
+    else {
+        Node* temp = this->left;
+        while(temp->left != nullptr) temp = temp->left;
+        return temp->value;
+    }
+}
+
+int Node::getMaxValue() {
+    if(this->right == nullptr) return this->value;
+    else {
+        Node* temp = this->right;
+        while(temp->right != nullptr) temp = temp->right;
+        return temp->value;
     }
 }
