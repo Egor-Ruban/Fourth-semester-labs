@@ -25,6 +25,7 @@ public:
     void deleteNode(Node*& object);
     int getMinValue();
     int getMaxValue();
+    void printByLayers();
 };
 
 

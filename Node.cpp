@@ -6,7 +6,8 @@
 #include <ctime>
 #include <iostream>
 #include <cmath>
-#include "Utils.h"
+#include <queue>
+#include "Utils/Utils.h"
 #include "Node.h"
 
 Node::Node(int layers, int notLessThan, int notMoreThan, Node* parent) {//генерирует поддерево поиска, с ограниченным корнем
@@ -16,6 +17,7 @@ Node::Node(int layers, int notLessThan, int notMoreThan, Node* parent) {//ген
     } else {
         this->value = notLessThan + rand()%(int)(notMoreThan - notLessThan);
     }
+    std::cout<<"layer: "<<layers<<" value: "<<value<<std::endl;
     if(layers != 1) {
         this->left = new Node(layers - 1, notLessThan - pow(2, layers - 1), value - 1, parent);
         this->right = new Node(layers - 1, value + pow(2,layers - 1), notMoreThan - 1, parent);
@@ -23,7 +25,7 @@ Node::Node(int layers, int notLessThan, int notMoreThan, Node* parent) {//ген
         left = nullptr;
         right = nullptr;
     }
-    std::cout<<"layer: "<<layers<<" value: "<<value<<std::endl;
+
 }
 
 Node::~Node() {
@@ -152,5 +154,17 @@ int Node::getMaxValue() {
         Node* temp = this->right;
         while(temp->right != nullptr) temp = temp->right;
         return temp->value;
+    }
+}
+
+void Node::printByLayers() {
+    std::queue<Node*> queue;
+    queue.push(this);
+    while(!queue.empty()){
+        Node* g = queue.front();
+        queue.pop();
+        if(g->left != nullptr) queue.push(g->left);
+        if(g->right != nullptr) queue.push(g->right);
+        std::cout<<g->value<<",";
     }
 }

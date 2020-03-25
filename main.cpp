@@ -2,16 +2,18 @@
 #include "Node.h"
 #include <ctime>
 #include <cmath>
+#include "Utils/Queue.h"
 
 int main() {
+    //fun();
     std::srand(unsigned(std::time(0)));
     Node h(4, pow(2, 5), 200);
-    std::cout<<h.getMinValue()<<std::endl;
-    std::cout<<h.getMaxValue()<<std::endl;
+    h.printByLayers();
+    //std::cout<<h.getMinValue()<<std::endl;
+    //std::cout<<h.getMaxValue()<<std::endl;
     return 0;
 }
 
-    //todo минимум и максимум
     //todo обход по уровням
     //todo обход по выбору: ЛПК, КЛП, КПЛ
 
