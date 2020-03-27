@@ -2,12 +2,12 @@
 #include "Node.h"
 #include <ctime>
 #include <cmath>
-#include "Utils/Queue.h"
 
 int main() {
+    int* values = new int[15]{89,64,78,58,65,3,72,82,44,7,10,49,97,76,71};
     //fun();
     std::srand(unsigned(std::time(0)));
-    Node h(4, pow(2, 5), 200);
+    Node h(values, 15);
     h.printByLayers();
     std::cout<<std::endl;
     h.recursivePrint();

@@ -12,8 +12,9 @@ public:
     Node* right;
     Node* parent;
     int value;
-    Node(int layers, int notLessThan , int notMoreThan, Node* parent = nullptr);//полное дерево высотой layers огранич. в root
+    Node(int layers, int notLessThan , int notMoreThan, Node* parent = nullptr, bool isFirstIt = true);
     Node(int valueOfRoot = 0, Node* parent = nullptr);
+    Node(int* values, int amount);
     Node(Node& object);
 
     ~Node();

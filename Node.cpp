@@ -10,17 +10,28 @@
 #include "Utils/Utils.h"
 #include "Node.h"
 
-Node::Node(int layers, int notLessThan, int notMoreThan, Node* parent) {//генерирует поддерево поиска, с ограниченным корнем
+Node::Node(int layers, int notLessThan, int notMoreThan, Node* parent, bool isFirstIt) {
     this->parent = parent;
     if(notLessThan == notMoreThan){
         value = notLessThan;
     } else {
         this->value = notLessThan + rand()%(int)(notMoreThan - notLessThan);
     }
-    std::cout<<"layer: "<<layers<<" value: "<<value<<" nmt "<<notMoreThan<<" nlt "<<notLessThan<<std::endl;
+    if(isFirstIt) this->value = 2*notLessThan + rand()%(int)(notMoreThan/2 - 2*notLessThan);
+    //std::cout<<"layer: "<<layers<<" value: "<<value<<" nmt "<<notMoreThan<<" nlt "<<notLessThan<<std::endl;
     if(layers != 1) {
-        this->left = new Node(layers - 1, notLessThan - pow(2, layers - 2), value - 1, parent);
-        this->right = new Node(layers - 1, value + pow(2,layers - 2), notMoreThan - 1, parent);
+        this->left = new Node(layers - 1,
+                notLessThan - pow(2, layers - 2),
+                value - 1,
+                this,
+                false
+                );
+        this->right = new Node(layers - 1,
+                value + pow(2,layers - 2),
+                notMoreThan - 1,
+                this,
+                false
+                );
     } else {
         left = nullptr;
         right = nullptr;
@@ -173,4 +184,21 @@ void Node::recursivePrint() {
     std::cout<<this->value<<",";
     if(this->left != nullptr) this->left->recursivePrint();
     if(this->right != nullptr) this->right->recursivePrint();
+}
+
+Node::Node(int *values, int amount) {
+    if(amount > 0) {
+        this->value = values[0];
+        this->left = nullptr;
+        this->right = nullptr;
+        this->parent = nullptr;
+        for(int i = 1; i < amount; i++){
+            this->insertValue(values[i]);
+        }
+    } else {
+        this->value = 0;
+        this->left = nullptr;
+        this->right = nullptr;
+        this->parent = nullptr;
+    }
 }
