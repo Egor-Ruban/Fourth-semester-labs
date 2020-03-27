@@ -11,14 +11,17 @@
 #include "Node.h"
 
 Node::Node(int layers, int notLessThan, int notMoreThan, Node* parent, bool isFirstIt) {
+    //плохой конструктор. есть просто потому, что я на него потратил времени больше, чем на все остальное вместе взятое
     this->parent = parent;
+    //создание value, исходя из ограничений
     if(notLessThan == notMoreThan){
         value = notLessThan;
     } else {
         this->value = notLessThan + rand()%(int)(notMoreThan - notLessThan);
     }
+    //дял первого используются более жесткие ограничения, чтоб случайно не сгенерировалось значение, близкое к краю
     if(isFirstIt) this->value = 2*notLessThan + rand()%(int)(notMoreThan/2 - 2*notLessThan);
-    //std::cout<<"layer: "<<layers<<" value: "<<value<<" nmt "<<notMoreThan<<" nlt "<<notLessThan<<std::endl;
+    //создает левого и правого потомка, если надо
     if(layers != 1) {
         this->left = new Node(layers - 1,
                 notLessThan - pow(2, layers - 2),
@@ -39,6 +42,7 @@ Node::Node(int layers, int notLessThan, int notMoreThan, Node* parent, bool isFi
 
 }
 
+//поле value удаляется аатоматически, но нужно вызвать удаление для всех потомков
 Node::~Node() {
     delete(this->left);
     delete(this->right);
@@ -82,6 +86,7 @@ Node &Node::operator=(const Node &object) {
     return *this;
 }
 
+//рекурсивно ищет в поддеревьях нужное значение. если не находит - возвращает nullptr
 Node *Node::findValue(int value) {
     if(this->value == value){
         return this;
@@ -104,6 +109,7 @@ Node *Node::findValue(int value) {
 }
 
 void Node::insertValue(int value) {
+    //если значение существует, то ничего не делает, иначе рекурсивно ищет в поддеревьях место для значения
     if(value == this->value) return;
     if(value < this->value){
         if(this->left == nullptr){
@@ -121,6 +127,10 @@ void Node::insertValue(int value) {
     }
 }
 
+//по алгоритму из лекции
+//если нет потомков, то просто удаляет
+//если один потомок, то сдвигает его повыше
+//если два потомка, то немного перестраивает их
 void Node::deleteNode(Node *&object) {
     if(object->left == nullptr && object->right == nullptr){
         if(object->parent->left == object) object->parent->left = nullptr;
@@ -150,6 +160,7 @@ void Node::deleteNode(Node *&object) {
     }
 }
 
+//идем налево до края и возвращаем крайнее левое значение
 int Node::getMinValue() {
     if(this->left == nullptr) return this->value;
     else {
@@ -159,6 +170,7 @@ int Node::getMinValue() {
     }
 }
 
+//идем направо до края и возвращаем крайнее правое значение
 int Node::getMaxValue() {
     if(this->right == nullptr) return this->value;
     else {
@@ -168,6 +180,7 @@ int Node::getMaxValue() {
     }
 }
 
+//доабвляем корень в очередь. Доставая из очереди выводим значение и добавляем в очередь потомков
 void Node::printByLayers() {
     std::queue<Node*> queue;
     queue.push(this);
@@ -180,12 +193,14 @@ void Node::printByLayers() {
     }
 }
 
+//выводим - идем в левое поддерево - идем в правое поддерево
 void Node::recursivePrint() {
     std::cout<<this->value<<",";
     if(this->left != nullptr) this->left->recursivePrint();
     if(this->right != nullptr) this->right->recursivePrint();
 }
 
+//значение корня устанавливаем сами, а дальше вызываем функцию добавления значения
 Node::Node(int *values, int amount) {
     if(amount > 0) {
         this->value = values[0];
@@ -201,4 +216,9 @@ Node::Node(int *values, int amount) {
         this->right = nullptr;
         this->parent = nullptr;
     }
+}
+
+void Node::findAndDelete(int value) {
+    Node* temp = this->findValue(value);
+    this->deleteNode(temp);
 }
