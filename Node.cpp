@@ -195,8 +195,8 @@ void Node::printByLayers() {
 
 //выводим - идем в левое поддерево - идем в правое поддерево
 void Node::recursivePrint() {
-    std::cout<<this->value<<",";
     if(this->left != nullptr) this->left->recursivePrint();
+    std::cout<<this->value<<",";
     if(this->right != nullptr) this->right->recursivePrint();
 }
 
@@ -221,4 +221,30 @@ Node::Node(int *values, int amount) {
 void Node::findAndDelete(int value) {
     Node* temp = this->findValue(value);
     this->deleteNode(temp);
+}
+
+int Node::getHeight() {
+    int heightToLeft = 0;
+    int heightToRight = 0;
+    if(this->left != nullptr) heightToLeft = this->left->getHeight();
+    if(this->right != nullptr) heightToRight = this->right->getHeight();
+    if(heightToLeft > heightToRight) return heightToLeft + 1;
+    return heightToRight + 1;
+}
+
+bool Node::isBalanced() {
+    std::queue<Node*> queue;
+    queue.push(this);
+    while(!queue.empty()){
+        Node* temp = queue.front();
+        queue.pop();
+        if(temp->left != nullptr) queue.push(temp->left);
+        if(temp->right != nullptr) queue.push(temp->right);
+        int heightToLeft = 0;
+        int heightToRight = 0;
+        if(temp->left != nullptr) heightToLeft = temp->left->getHeight();
+        if(temp->right != nullptr) heightToRight = temp->right->getHeight();
+        if(abs(heightToLeft - heightToRight) > 1) return false;
+    }
+    return true;
 }

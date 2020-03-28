@@ -34,6 +34,9 @@ public:
     int getMaxValue(); //максимальное значение (крайнйи правый лист)
     void printByLayers(); //вывод по уровням
     void recursivePrint(); //обход влево в глубину (КЛП вроде)
+
+    int getHeight();
+    bool isBalanced();
 };
 
 
