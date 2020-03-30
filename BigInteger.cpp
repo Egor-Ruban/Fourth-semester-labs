@@ -314,8 +314,7 @@ BigInteger BigInteger::inputDecimal(std::string decimalInput) {
     reverse(decimalInput.begin(), decimalInput.end()); //развернул число для удобства работы
     BigInteger baseInput = BigInteger(Empty, 1);
     for(char digit : decimalInput){
-        BigInteger f = BigInteger(Digit, digit - '0');
-        baseInput += (f * position);
+        baseInput += (position * (digit - '0'));
         position *= 0xA;
     }
     return baseInput;
