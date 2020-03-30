@@ -310,13 +310,11 @@ std::string BigInteger::outputDecimal(){ //перевод в десятичну�
 }
 
 BigInteger BigInteger::inputDecimal(std::string decimalInput) {
-    BigInteger position = BigInteger();
-    position.coefficients[0] = 1;//какой коэффициент десятичного числа рассматриваем
+    BigInteger position = BigInteger(Digit, 1);//какой коэффициент десятичного числа рассматриваем
     reverse(decimalInput.begin(), decimalInput.end()); //развернул число для удобства работы
     BigInteger baseInput = BigInteger(Empty, 1);
     for(char digit : decimalInput){
-        BigInteger f = BigInteger(Default);
-        f.coefficients[0] = (digit - '0');
+        BigInteger f = BigInteger(Digit, digit - '0');
         baseInput += (f * position);
         position *= 0xA;
     }
