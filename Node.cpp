@@ -56,30 +56,32 @@ Node::Node(int valueOfRoot, Node* parent) {
 }
 
 Node::Node(Node &object) {
-    this->parent = object.parent;
     this->value = object.value;
     if(object.left != nullptr) {
         this->left = new Node(*object.left);
+        this->left->parent = this;
     } else {
         this->left = nullptr;
     }
     if(object.right != nullptr) {
         this->right = new Node(*object.right);
+        this->right->parent = this;
     } else {
         this->right = nullptr;
     }
 }
 
 Node &Node::operator=(const Node &object) {
-    this->parent = object.parent;
     this->value = object.value;
     if(object.left != nullptr) {
         this->left = new Node(*object.left);
+        this->left->parent = this;
     } else {
         this->left = nullptr;
     }
     if(object.right != nullptr) {
         this->right = new Node(*object.right);
+        this->right->parent = this;
     } else {
         this->right = nullptr;
     }
@@ -196,8 +198,8 @@ void Node::printByLayers() {
 //выводим - идем в левое поддерево - идем в правое поддерево
 void Node::recursivePrint() {
     if(this->left != nullptr) this->left->recursivePrint();
-    std::cout<<this->value<<",";
     if(this->right != nullptr) this->right->recursivePrint();
+    std::cout<<this->value<<",";
 }
 
 //значение корня устанавливаем сами, а дальше вызываем функцию добавления значения
