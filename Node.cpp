@@ -250,3 +250,40 @@ bool Node::isBalanced() {
     }
     return true;
 }
+
+
+void Node::findAndDeleteChallenge(int value) {
+    Node copyOfThis(*this);
+    Node* parentOfDeleting;
+    std::queue<Node*> queue;
+    queue.push(this);
+    while(!queue.empty()){
+        Node* temp = queue.front();
+        queue.pop();
+        if(temp->left != nullptr) queue.push(temp->left);
+        if(temp->right != nullptr) queue.push(temp->right);
+        if(temp->left->value == value){
+            parentOfDeleting = temp->left;
+            break;
+        }
+        if(temp->right->value == value){
+            parentOfDeleting = temp->right;
+            break;
+        }
+    }
+    Node* toDelete = findValue(value);
+    Node* toReplace = toDelete;
+    Node* parentOfReplacing = toReplace;
+    toReplace = toReplace->left;
+    while(toReplace->right != nullptr){
+        parentOfReplacing = toReplace;
+        toReplace = toReplace->right;
+    }//если удаляемого нет, то все пойдет прахом, надо добавить проверку
+    if(parentOfDeleting->left->value == value) parentOfDeleting->left = toReplace;
+    if(parentOfDeleting->right->value == value) parentOfDeleting->right = toReplace;
+    if(parentOfReplacing->left == toReplace) parentOfReplacing->left = toReplace->left;
+    if(parentOfReplacing->right == toReplace) parentOfReplacing->right = toReplace->left;
+    toReplace->left = toDelete->left;
+    toReplace->right = toDelete->right;
+    delete(toDelete);
+}

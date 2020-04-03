@@ -30,6 +30,7 @@ public:
     void insertValue(int value); //добавить значение в дерево
     void deleteNode(Node*& object); //удалить узел
     void findAndDelete(int value); //удалить значение
+    void findAndDeleteChallenge(int value);
     int getMinValue(); //минимальное значение (крайний левый лист)
     int getMaxValue(); //максимальное значение (крайнйи правый лист)
     void printByLayers(); //вывод по уровням
