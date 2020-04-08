@@ -13,7 +13,7 @@ private:
     Node* right;
     Node* parent;
     int value;
-public:
+
     //почти случайно строит первое полное бинарное дерево поиска
     Node(int layers, int notLessThan , int notMoreThan, Node* parent = nullptr, bool isFirstIt = true);
     //строит узел без последователей
