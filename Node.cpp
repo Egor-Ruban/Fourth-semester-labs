@@ -72,18 +72,22 @@ Node::Node(Node &object) {
 }
 
 Node &Node::operator=(const Node &object) {
-    this->value = object.value;
-    if(object.left != nullptr) {
-        this->left = new Node(*object.left);
-        this->left->parent = this;
-    } else {
-        this->left = nullptr;
-    }
-    if(object.right != nullptr) {
-        this->right = new Node(*object.right);
-        this->right->parent = this;
-    } else {
-        this->right = nullptr;
+    if (this != &object) {
+        delete(this->left);
+        delete(this->right);
+        this->value = object.value;
+        if (object.left != nullptr) {
+            this->left = new Node(*object.left);
+            this->left->parent = this;
+        } else {
+            this->left = nullptr;
+        }
+        if (object.right != nullptr) {
+            this->right = new Node(*object.right);
+            this->right->parent = this;
+        } else {
+            this->right = nullptr;
+        }
     }
     return *this;
 }
@@ -134,31 +138,33 @@ void Node::insertValue(int value) {
 //если один потомок, то сдвигает его повыше
 //если два потомка, то немного перестраивает их
 void Node::deleteNode(Node *&object) {
-    if(object->left == nullptr && object->right == nullptr){
-        if(object->parent->left == object) object->parent->left = nullptr;
-        else object->parent->right = nullptr;
-        delete(object);
-    } else if(object->left != nullptr && object->right == nullptr){
-        if(object->parent->left == object) object->parent->left = object->left;
-        else object->parent->right = object->left;
-        object->right = nullptr;
-        delete(object);
-    } else if(object->left == nullptr && object->right != nullptr){
-        if(object->parent->left == object) object->parent->left = object->right;
-        else object->parent->right = object->right;
-        object->left = nullptr;
-        delete(object);
-    } else if(object->left != nullptr && object->right != nullptr){
-        Node* temp = object->right;
-        while(temp->left != nullptr){
-            temp = temp->left;
+    if(object->parent != nullptr) {
+        if (object->left == nullptr && object->right == nullptr) {
+            if (object->parent->left == object) object->parent->left = nullptr;
+            else object->parent->right = nullptr;
+            delete (object);
+        } else if (object->left != nullptr && object->right == nullptr) {
+            if (object->parent->left == object) object->parent->left = object->left;
+            else object->parent->right = object->left;
+            object->right = nullptr;
+            delete (object);
+        } else if (object->left == nullptr && object->right != nullptr) {
+            if (object->parent->left == object) object->parent->left = object->right;
+            else object->parent->right = object->right;
+            object->left = nullptr;
+            delete (object);
+        } else if (object->left != nullptr && object->right != nullptr) {
+            Node *temp = object->right;
+            while (temp->left != nullptr) {
+                temp = temp->left;
+            }
+            temp->left = object->left;
+            if (object->parent->left == object) object->parent->left = object->right;
+            else object->parent->right = object->right;
+            object->left = nullptr;
+            object->right = nullptr;
+            delete (object);
         }
-        temp->left = object->left;
-        if(object->parent->left == object) object->parent->left = object->right;
-        else object->parent->right = object->right;
-        object->left = nullptr;
-        object->right = nullptr;
-        delete(object);
     }
 }
 
@@ -251,39 +257,17 @@ bool Node::isBalanced() {
     return true;
 }
 
-
-void Node::findAndDeleteChallenge(int value) {
-    Node copyOfThis(*this);
-    Node* parentOfDeleting;
-    std::queue<Node*> queue;
-    queue.push(this);
-    while(!queue.empty()){
-        Node* temp = queue.front();
-        queue.pop();
-        if(temp->left != nullptr) queue.push(temp->left);
-        if(temp->right != nullptr) queue.push(temp->right);
-        if(temp->left->value == value){
-            parentOfDeleting = temp->left;
-            break;
-        }
-        if(temp->right->value == value){
-            parentOfDeleting = temp->right;
-            break;
-        }
+Node *Node::findParentByValue(int value) {
+    Node* tempValue = this;
+    Node* tempParent = this;// за счет этого оно в качестве родителя корня вернет корень
+    while(true){ //рано или поздно что-то вернет
+        if(tempValue == nullptr) return nullptr; //если не нашел значение - nullptr
+        if(value > tempValue->value){
+            tempParent = tempValue;
+            tempValue = tempValue->right;
+        } else if(value < tempValue->value) {
+            tempParent = tempValue;
+            tempValue = tempValue->left;
+        } else return tempParent;
     }
-    Node* toDelete = findValue(value);
-    Node* toReplace = toDelete;
-    Node* parentOfReplacing = toReplace;
-    toReplace = toReplace->left;
-    while(toReplace->right != nullptr){
-        parentOfReplacing = toReplace;
-        toReplace = toReplace->right;
-    }//если удаляемого нет, то все пойдет прахом, надо добавить проверку
-    if(parentOfDeleting->left->value == value) parentOfDeleting->left = toReplace;
-    if(parentOfDeleting->right->value == value) parentOfDeleting->right = toReplace;
-    if(parentOfReplacing->left == toReplace) parentOfReplacing->left = toReplace->left;
-    if(parentOfReplacing->right == toReplace) parentOfReplacing->right = toReplace->left;
-    toReplace->left = toDelete->left;
-    toReplace->right = toDelete->right;
-    delete(toDelete);
 }

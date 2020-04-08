@@ -1,31 +1,24 @@
 //
-// Created by compucter on 24.03.2020.
+// Created by compucter on 08.04.2020.
 //
 
-#ifndef SEARCHTREE_NODE_H
-#define SEARCHTREE_NODE_H
+#ifndef SEARCHTREE_TREE_H
+#define SEARCHTREE_TREE_H
 
 
-class Node {
-    friend class Tree;
-private:
-    Node* left;
-    Node* right;
-    Node* parent;
-    int value;
-public:
-    //почти случайно строит первое полное бинарное дерево поиска
-    Node(int layers, int notLessThan , int notMoreThan, Node* parent = nullptr, bool isFirstIt = true);
-    //строит узел без последователей
-    Node(int valueOfRoot = 0, Node* parent = nullptr);
+#include "Node.h"
+
+class Tree {
+    Node* root;
+
+    //строит дерево с одним числом
+    Tree(int valueOfRoot = 0);
     //строит дерево поиска по массиву
-    Node(int* values, int amount);
+    Tree(int* values, int amount);
     //копирование
-    Node(Node& object);
+    Tree(Tree& object);
 
-    ~Node();
-
-    Node& operator=(const Node& object);
+    Tree& operator=(const Tree& object);
 
     Node* findValue(int value); //найти значение и вернуть адрес его узела
     void insertValue(int value); //добавить значение в дерево
@@ -42,4 +35,4 @@ public:
 };
 
 
-#endif //SEARCHTREE_NODE_H
+#endif //SEARCHTREE_TREE_H
