@@ -178,6 +178,7 @@ BigInteger& BigInteger::operator+=(const BigInteger &object) {
 
 BigInteger& BigInteger::operator=(const BigInteger &object) {
     if(this != &object) {
+        delete(this);
         this->availableCoefficients = object.availableCoefficients;
         this->coefficients = new BASE[this->availableCoefficients];
         for (int i = 0; i < availableCoefficients; i++) {
@@ -252,7 +253,7 @@ BigInteger BigInteger::operator-(const BigInteger &object) const {
         else subtrahend = lesserInteger.coefficients[iBigger - difference];
 
         if(minuend < subtrahend){
-            result.coefficients[iBigger] = minuend + pow(2, BASE_SIZE) - subtrahend; //pow - заимствование у старшего
+            result.coefficients[iBigger] = minuend + (1<<BASE_SIZE) - subtrahend; //pow - заимствование у старшего
             transfer = 1;
         } else {
             result.coefficients[iBigger] = minuend - subtrahend;
@@ -272,7 +273,7 @@ BigInteger BigInteger::operator/(const BASE &divider) const { //простое �
     BigInteger result = BigInteger(Empty, this->availableCoefficients);
     BiggerThanBASE residue = 0; //остаток от деления
     for(int i = 0; i < this->availableCoefficients; i++){
-        BiggerThanBASE dividend = this->coefficients[i] + residue * pow(2,BASE_SIZE); //деление на i-ом шаге
+        BiggerThanBASE dividend = this->coefficients[i] + residue * (1<<BASE_SIZE) ; //деление на i-ом шаге
         result.coefficients[i] = dividend / divider; //результат деления на i-ом шаге
         residue = dividend % divider; //остаток от деления на i-ом шаге
     }
@@ -289,7 +290,7 @@ BASE BigInteger::operator%(const BASE &divider) const { //то же самое, 
     BigInteger result = BigInteger(Empty, this->availableCoefficients);
     BiggerThanBASE residue = 0;
     for(int i = 0; i < this->availableCoefficients; i++){
-        BiggerThanBASE dividend = this->coefficients[i] + residue * pow(2,BASE_SIZE);
+        BiggerThanBASE dividend = this->coefficients[i] + residue * (1<<BASE_SIZE) ;
         result.coefficients[i] = dividend / divider;
         residue = dividend % divider;
     }
