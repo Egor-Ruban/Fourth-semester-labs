@@ -270,6 +270,10 @@ BigInteger& BigInteger::operator-=(const BigInteger &object) {
 }
 
 BigInteger BigInteger::operator/(const BASE &divider) const { //простое деление в столбик
+    if(divider == 0){
+        std::cout<<"divide by 0"<<std::endl;
+        return *this;
+    }
     BigInteger result = BigInteger(Empty, this->availableCoefficients);
     BiggerThanBASE residue = 0; //остаток от деления
     for(int i = 0; i < this->availableCoefficients; i++){
@@ -281,12 +285,20 @@ BigInteger BigInteger::operator/(const BASE &divider) const { //простое �
 }
 
 BigInteger& BigInteger::operator/=(const BASE &divider) {
+    if(divider == 0){
+        std::cout<<"divide by 0"<<std::endl;
+        return *this;
+    }
     BigInteger result = this->operator/(divider);
     *this = result;
     return *this;
 }
 
 BASE BigInteger::operator%(const BASE &divider) const { //то же самое, что и в обычном делении
+    if(divider == 0){
+        std::cout<<"divide by 0"<<std::endl;
+        return 0;
+    }
     BigInteger result = BigInteger(Empty, this->availableCoefficients);
     BiggerThanBASE residue = 0;
     for(int i = 0; i < this->availableCoefficients; i++){
@@ -322,6 +334,11 @@ BigInteger BigInteger::inputDecimal(std::string decimalInput) {
 }
 
 BigInteger BigInteger::operator/(const BigInteger &divider) const {
+    BigInteger zero(Digit, 0);
+    if(divider == zero){
+        std::cout<<"divide by 0"<<std::endl;
+        return *this;
+    }
     BigInteger result = BigInteger(Empty, availableCoefficients); //тут будет результат деления
     BigInteger residue;
     BigInteger ten = BigInteger(Empty, 2); //просто десятка для умножения
@@ -344,6 +361,11 @@ BigInteger BigInteger::operator/(const BigInteger &divider) const {
 }
 
 BigInteger BigInteger::operator%(const BigInteger &divider) const {
+    BigInteger zero(Digit, 0);
+    if(divider == zero){
+        std::cout<<"divide by 0"<<std::endl;
+        return *this;
+    }
     BigInteger residue;
     BigInteger ten = BigInteger(Empty, 2); //просто десятка для умножения
     ten.coefficients[0] = 1;
@@ -364,6 +386,11 @@ BigInteger BigInteger::operator%(const BigInteger &divider) const {
 }
 
 BigInteger& BigInteger::operator/=(const BigInteger &divider){
+    BigInteger zero(Digit, 0);
+    if(divider == zero) {
+        std::cout << "divide by 0" << std::endl;
+        return *this;
+    }
     BigInteger result = this->operator/(divider);
     *this = result;
     return *this;
