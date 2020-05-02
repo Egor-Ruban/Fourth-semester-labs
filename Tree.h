@@ -10,13 +10,14 @@
 
 class Tree {
     Node* root;
-
+public:
     //строит дерево с одним числом
     Tree(int valueOfRoot = 0);
     //строит дерево поиска по массиву
     Tree(int* values, int amount);
     //копирование
     Tree(Tree& object);
+    ~Tree();
 
     Tree& operator=(const Tree& object);
 

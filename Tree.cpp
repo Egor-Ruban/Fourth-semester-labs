@@ -19,6 +19,7 @@ void Tree::deleteNode(Node *&object) {
     if(root == object){
         if(root->left == nullptr && root->right == nullptr){
             delete(root);
+            root = nullptr;
         } else if(root->left == nullptr && root->right != nullptr){
             root = root->right;
             object->left = nullptr;
@@ -96,4 +97,15 @@ Tree::Tree(int *values, int amount) {
 Tree::Tree(Tree &object) {
     if(object.root == nullptr) root = nullptr;
     else root = new Node(*object.root);
+}
+
+Tree::~Tree() {
+    if(root != nullptr) delete(root);
+}
+
+Tree &Tree::operator=(const Tree &object) {
+    if (this != &object){
+        delete(root);
+        this->root = new Node(*object.root);
+    }
 }

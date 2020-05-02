@@ -146,12 +146,14 @@ void Node::deleteNode(Node *&object) {
         } else if (object->left != nullptr && object->right == nullptr) {
             if (object->parent->left == object) object->parent->left = object->left;
             else object->parent->right = object->left;
-            object->right = nullptr;
+            object->left->parent = object->parent;
+            object->left = nullptr;
             delete (object);
         } else if (object->left == nullptr && object->right != nullptr) {
             if (object->parent->left == object) object->parent->left = object->right;
             else object->parent->right = object->right;
-            object->left = nullptr;
+            object->right->parent = object->parent;
+            object->right = nullptr;
             delete (object);
         } else if (object->left != nullptr && object->right != nullptr) {
             Node *temp = object->right;
@@ -159,6 +161,7 @@ void Node::deleteNode(Node *&object) {
                 temp = temp->left;
             }
             temp->left = object->left;
+            temp->parent = object->parent;
             if (object->parent->left == object) object->parent->left = object->right;
             else object->parent->right = object->right;
             object->left = nullptr;
