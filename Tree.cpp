@@ -22,11 +22,13 @@ void Tree::deleteNode(Node *&object) {
             root = nullptr;
         } else if(root->left == nullptr && root->right != nullptr){
             root = root->right;
+            root->parent = nullptr;
             object->left = nullptr;
             object->right = nullptr;
             delete (object);
         } else if(root->left != nullptr && root->right == nullptr){
             root = root->left;
+            root->parent = nullptr;
             object->left = nullptr;
             object->right = nullptr;
             delete (object);
@@ -36,8 +38,17 @@ void Tree::deleteNode(Node *&object) {
                 temp = temp->left;
             }
             temp->left = object->left;
+            temp->left->parent = temp;
+            if(object->right == temp) temp->right = nullptr;
+            else temp->right = object->right;
+            object->right->parent = temp;
+            if (temp->parent->left == temp) temp->parent->left = nullptr;
+            else temp->parent->right = nullptr;
+            temp->parent = nullptr;
+            temp->right = object->right;
             object->left = nullptr;
             object->right = nullptr;
+            root = temp;
             delete (object);
         }
     } else {

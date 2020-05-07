@@ -161,6 +161,12 @@ void Node::deleteNode(Node *&object) {
                 temp = temp->left;
             }
             temp->left = object->left;
+            temp->left->parent = temp;
+            if(object->right == temp) temp->right = nullptr;
+            else temp->right = object->right;
+            temp->right->parent = temp;
+            if (temp->parent->left == temp) temp->parent->left = nullptr;
+            else temp->parent->right = nullptr;
             temp->parent = object->parent;
             if (object->parent->left == object) object->parent->left = object->right;
             else object->parent->right = object->right;
