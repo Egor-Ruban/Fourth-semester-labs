@@ -41,7 +41,7 @@ void Tree::deleteNode(Node *&object) {
             temp->left->parent = temp;
             if(object->right == temp) temp->right = nullptr;
             else temp->right = object->right;
-            object->right->parent = temp;
+            temp->right->parent = temp;
             if (temp->parent->left == temp) temp->parent->left = nullptr;
             else temp->parent->right = nullptr;
             temp->parent = nullptr;
