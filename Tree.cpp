@@ -37,18 +37,19 @@ void Tree::deleteNode(Node *&object) {
             while (temp->left != nullptr) {
                 temp = temp->left;
             }
-            temp->left = object->left;
+
+            temp->left = object->left; //перенос левого поддерева удаляемого узла
             temp->left->parent = temp;
-            if(object->right == temp) temp->right = nullptr;
-            else temp->right = object->right;
-            temp->right->parent = temp;
-            if (temp->parent->left == temp) temp->parent->left = nullptr;
-            else temp->parent->right = nullptr;
-            temp->parent = nullptr;
-            temp->right = object->right;
+
+            if(object->right != temp){
+                temp->right = object->right; // перестроение правого поддерева удаляемого узла
+                temp->right->parent = temp;
+                temp->parent->left = temp->right;
+                if(temp->right != nullptr) temp->right->parent = temp->parent;
+            }
+            root = temp;
             object->left = nullptr;
             object->right = nullptr;
-            root = temp;
             delete (object);
         }
     } else {
