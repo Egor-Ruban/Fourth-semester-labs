@@ -166,7 +166,6 @@ void Node::deleteNode(Node *&object) {
 
             if(object->right != temp){
                 temp->right = object->right; // перенос правого поддерева удаляемого узла
-                temp->right->parent = temp;
                 temp->parent->left = temp->right;
                 if(temp->right != nullptr) temp->right->parent = temp->parent;
             }
