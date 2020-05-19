@@ -29,9 +29,9 @@ int main() {
         //std::cout<<" / "<<(bi / 0)<<std::endl;
         //std::cout<<" % "<<(int)(bi % 0)<<std::endl;
         //bi-=bi2;
-        std::string str = bi.outputDecimal();
-        std::cout << "dec Out " << str << std::endl;
-        std::cout << "dec In " << BigInteger::inputDecimal(str) << std::endl;
+        //std::string str = bi.outputDecimal();
+        //std::cout << "dec Out " << str << std::endl;
+        //std::cout << "dec In " << BigInteger::inputDecimal(str) << std::endl;
         //std::cout<<" / "<<(bi / bi2)<<std::endl;
         //std::cout<<" % "<<(bi % bi2)<<std::endl;
         //bi/=bi2;

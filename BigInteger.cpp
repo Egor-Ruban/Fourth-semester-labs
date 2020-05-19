@@ -299,11 +299,9 @@ BASE BigInteger::operator%(const BASE &divider) const { //то же самое, 
         std::cout<<"divide by 0"<<std::endl;
         return 0;
     }
-    BigInteger result = BigInteger(Empty, this->availableCoefficients);
     BiggerThanBASE residue = 0;
     for(int i = 0; i < this->availableCoefficients; i++){
         BiggerThanBASE dividend = this->coefficients[i] + residue * (1<<BASE_SIZE) ;
-        result.coefficients[i] = dividend / divider;
         residue = dividend % divider;
     }
     return residue;
@@ -323,6 +321,11 @@ std::string BigInteger::outputDecimal(){ //перевод в десятичну�
 }
 
 BigInteger BigInteger::inputDecimal(std::string decimalInput) {
+    for(auto digit : decimalInput){
+        if(digit < '0' || digit > '9'){
+            throw std::invalid_argument("Not Decimal Number at input");
+        }
+    }
     BigInteger position = BigInteger(Digit, 1);//какой коэффициент десятичного числа рассматриваем
     reverse(decimalInput.begin(), decimalInput.end()); //развернул число для удобства работы
     BigInteger baseInput = BigInteger(Empty, 1);
