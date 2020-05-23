@@ -165,9 +165,10 @@ void Node::deleteNode(Node *&object) {
             temp->left->parent = temp;
 
             if(object->right != temp){
-                temp->right = object->right; // перенос правого поддерева удаляемого узла
+                object -> right -> parent = temp;
                 temp->parent->left = temp->right;
                 if(temp->right != nullptr) temp->right->parent = temp->parent;
+                temp->right = object->right; // перенос правого поддерева удаляемого узла
             }
 
             temp->parent = object->parent;

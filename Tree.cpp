@@ -42,9 +42,10 @@ void Tree::deleteNode(Node *&object) {
             temp->left->parent = temp;
 
             if(object->right != temp){
-                temp->right = object->right; // перестроение правого поддерева удаляемого узла
+                object -> right -> parent = temp;
                 temp->parent->left = temp->right;
                 if(temp->right != nullptr) temp->right->parent = temp->parent;
+                temp->right = object->right; // перестроение правого поддерева удаляемого узла
             }
             temp->parent = nullptr;
             root = temp;
